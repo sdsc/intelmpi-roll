@@ -1,0 +1,27 @@
+--- parallel_studio_xe_2016_update3/silent.cfg	2016-04-21 07:40:37.000000000 -0700
++++ patch-files/silent.cfg	2016-08-04 18:52:35.842121998 -0700
+@@ -6,13 +6,13 @@
+ # snpat       - the serial number pattern (ABCD-01234567)
+ 
+ # Accept EULA, valid values are: {accept, decline}
+-ACCEPT_EULA=decline
++ACCEPT_EULA=accept
+ 
+ # Optional error behavior, valid values are: {yes, no}
+ CONTINUE_WITH_OPTIONAL_ERROR=yes
+ 
+ # Install location, valid values are: {/opt/intel, filepat}
+-PSET_INSTALL_DIR=/opt/intel
++PSET_INSTALL_DIR=PKGROOT
+ 
+ # Continue with overwrite of existing installation directory, valid values are: {yes, no}
+ CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes
+@@ -30,7 +30,7 @@
+ #ACTIVATION_SERIAL_NUMBER=snpat
+ 
+ # License file or license server, valid values are: {lspat, filepat}
+-#ACTIVATION_LICENSE_FILE=
++ACTIVATION_LICENSE_FILE=LICENSEPATH
+ 
+ # Activation type, valid values are: {exist_lic, license_server, license_file, trial_lic, serial_number}
+ ACTIVATION_TYPE=exist_lic

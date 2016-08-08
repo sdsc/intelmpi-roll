@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The intelmpi Roll - https://software.intel.com/en-us/intel-mpi-library
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2014 The Regents of the University of California.
+	All rights reserved. Rocks(r) v6.1.1 www.rocksclusters.org
+	</copyright>
+
+	<package>sdsc-intelmpi</package>
+	<package>sdsc-intelmpi-modules</package>
+	<package>sdsc-intelmpi-roll-test</package>
+
+
+</kickstart>
