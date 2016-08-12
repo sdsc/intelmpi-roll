@@ -1,0 +1,16 @@
+#%Module1.0
+module-whatis "Intel(R) Math Kernel Library"
+module-whatis "Version: VERSION"
+
+set intelHome /opt/intel/INTELVER/compilers_and_libraries/linux
+setenv MKLHOME $intelHome/mkl
+
+prepend-path MANPATH $intelHome/man/en_US
+prepend-path LD_LIBRARY_PATH $intelHome/mkl/lib/intel64
+prepend-path LIBRARY_PATH $intelHome/mkl/lib/intel64
+setenv MKL_ROOT $intelHome/mkl
+setenv MKLROOT $intelHome/mkl
+setenv FPATH $intelHome/mkl/include
+setenv CPATH $intelHome/mkl/include
+setenv NLSPATH $intelHome/mkl/lib/intel64/locale/%l_%t/%N
+setenv INCLUDE $intelHome/mkl/include

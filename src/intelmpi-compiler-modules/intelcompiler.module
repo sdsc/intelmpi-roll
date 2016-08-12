@@ -1,0 +1,63 @@
+#%Module1.0
+module-whatis "Intel(R) Compiler Tools"
+module-whatis "Version: VERSION"
+module-whatis "Description: Intel Compiler Tools includes the following...
+                       Intel(R) Parallel Studio XE Composer Edition for Linux
+                       Intel(R) C++ Compiler XE for Linux
+                       Intel(R) Fortran Compiler XE for Linux
+                       Intel(R) Integrated Performance Primitives for Linux
+                       Intel(R) Math Kernel Library for Linux
+                       Intel(R) Threading Building Blocks for Linux"
+
+# If unloading, also unload any intel-dependent modules
+if {[module-info mode switch1] || [module-info mode switch3]} {
+  # Get the command line that invoked this process; unload only if switching
+  # from intel to another (compiler) module, e.g., "module switch intel gnu"
+  set commandWords [split [exec /bin/ps -p [pid] -o args=] " "]
+  set switchFrom [lindex [split [module-info name] "/"] 0]
+  set switchTo [lindex [split [lindex $commandWords end] "/"] 0]
+  set unloadApps [expr ! [string equal $switchTo $switchFrom]]
+} elseif {[module-info mode remove]} {
+  set unloadApps 1
+} else {
+  set unloadApps 0
+}
+if {$unloadApps && [info exists env(LOADEDMODULES)]} {
+  foreach app [lreverse [split $env(LOADEDMODULES) ":"]] {
+    # Check whether any intel-dependent module dir contains a module w/this name
+    if {[llength [glob -nocomplain /opt/modulefiles/*/.intel/$app]] > 0} {
+      puts stderr "Unloading compiler-dependent module $app"
+      module unload [lindex [split $app "/"] 0]
+    }
+  }
+}
+
+# Add all intel-dependent module dirs to the search path
+foreach path [glob -nocomplain /opt/modulefiles/*/.intel] {
+  prepend-path MODULEPATH $path
+}
+
+# Compiler environment modifications
+set intelHome /opt/intel/VERSION/compilers_and_libraries/linux
+setenv INTELHOME $intelHome
+
+prepend-path PATH $intelHome/bin/intel64:$intelHome/mpirt/bin/intel64:$intelHome/debugger/gdb/intel64_mic/bin
+prepend-path MANPATH $intelHome/man/en_US:$intelHome/man/en_US:$intelHome/debugger/gdb/intel64/share/man/:$intelHome/debugger/gdb/intel64_mic/share/man/
+setenv TBBROOT $intelHome/tbb
+prepend-path LD_LIBRARY_PATH $intelHome/compiler/lib/intel64:$intelHome/mpirt/lib/intel64:$intelHome/ipp/../compiler/lib/intel64:$intelHome/ipp/lib/intel64:$intelHome/compiler/lib/intel64:$intelHome/mkl/lib/intel64:$intelHome/tbb/lib/intel64/gcc4.4
+setenv LIBRARY_PATH $intelHome/compiler/lib/intel64:$intelHome/ipp/../compiler/lib/intel64:$intelHome/ipp/lib/intel64:$intelHome/compiler/lib/intel64:$intelHome/mkl/lib/intel64:$intelHome/tbb/lib/intel64/gcc4.4
+setenv INTEL_LICENSE_FILE $intelHome/licenses:/opt/intel/licenses:/root/intel/licenses
+setenv MKL_ROOT $intelHome/mkl
+setenv MKLROOT $intelHome/mkl
+setenv IPPROOT $intelHome/ipp
+setenv FPATH $intelHome/mkl/include
+setenv CPATH $intelHome/ipp/include:$intelHome/mkl/include:$intelHome/tbb/include
+setenv NLSPATH $intelHome/compiler/lib/intel64/locale/%l_%t/%N:$intelHome/ipp/lib/intel64/locale/%l_%t/%N:$intelHome/mkl/lib/intel64/locale/%l_%t/%N:$intelHome/debugger/gdb/intel64_mic/share/locale/%l_%t/%N:$intelHome/debugger/gdb/intel64/share/locale/%l_%t/%N
+setenv INCLUDE $intelHome/mkl/include
+setenv GDBSERVER_MIC $intelHome/debugger/gdb/target/mic/bin/gdbserver
+setenv MIC_LD_LIBRARY_PATH $intelHome/compiler/lib/mic:$intelHome/mpirt/lib/mic:$intelHome/compiler/lib/mic:$intelHome/mkl/lib/mic:$intelHome/tbb/lib/mic
+setenv MIC_LIBRARY_PATH $intelHome/compiler/lib/mic:$intelHome/mpirt/lib/mic:$intelHome/tbb/lib/mic
+setenv GDB_CROSS $intelHome/debugger/gdb/intel64_mic/bin/gdb-mic
+setenv MPM_LAUNCHER $intelHome/debugger/mpm/bin/start_mpm.sh
+setenv INTEL_PYTHONHOME $intelHome/debugger/python/intel64/
+setenv INFOPATH $intelHome/debugger/gdb/intel64/share/info/:$intelHome/debugger/gdb/intel64_mic/share/info/

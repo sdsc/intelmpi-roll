@@ -13,7 +13,9 @@
 	</copyright>
 
 	<package>sdsc-intelmpi</package>
-	<package>sdsc-intelmpi-modules</package>
+	<package>sdsc-intelmpi-modules_ROLLCOMPILER</package>
+	<package>sdsc-intelmpi-mkl-modules</package>
+	<package>sdsc-intelmpi-compiler-modules</package>
 	<package>sdsc-intelmpi-roll-test</package>
 
 

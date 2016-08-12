@@ -56,7 +56,8 @@ In addition to the software itself, the roll installs intelmpi environment
 module files in:
 
 ```shell
-/opt/modulefiles/compilers/intelmpi
+/opt/modulefiles/compilers/intelmpi (for the compiler component)
+/opt/modulefiles/mpi/intelmpi (for the mpi component)
 ```
 
 

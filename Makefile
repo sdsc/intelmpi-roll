@@ -65,7 +65,17 @@ endif
 include Rolls.mk
 
 default:
-	$(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" roll
+	for i in `ls nodes/*.in`; do \
+          export o=`echo $$i | sed 's/\.in//'`; \
+          cp $$i $$o; \
+          for c in $(ROLLCOMPILER); do \
+            COMPILERNAME=`echo $$c | awk -F/ '{print $$1}'`; \
+            perl -pi -e "print and s/COMPILERNAME/$${COMPILERNAME}/g if m/COMPILERNAME/" $$o; \
+          done; \
+          perl -pi -e '$$_ = "" if m/COMPILERNAME/' $$o; \
+        done
+        $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" roll
+
 
 distclean:: clean
 	-rm -f _arch build.log

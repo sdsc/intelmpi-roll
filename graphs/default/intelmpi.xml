@@ -11,12 +11,20 @@
 	All rights reserved. Rocks(r) v6.1.1 www.rocksclusters.org
 	</copyright>
 
-	<edge from="base">
-		<to>intelmpi-base</to>
+	<edge from="login">
+		<to>intelmpi-install</to>
 	</edge>
 
-	<order head="base">
-		<tail>intelmpi-base</tail>
+	<order head="login">
+		<tail>intelmpi-install</tail>
+	</order>
+
+	<edge from="compute">
+		<to>intelmpi-install</to>
+	</edge>
+
+	<order head="compute">
+		<tail>intelmpi-install</tail>
 	</order>
 
 </graph>

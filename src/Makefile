@@ -1,13 +1,12 @@
-#
 # $Id$
 #
 # @Copyright@
 # 
-# 				Rocks(r)
+# 				Rocks(tm)
 # 		         www.rocksclusters.org
-# 		       version 6.1.1 (Sand Boa)
+# 		        version 4.3 (Mars Hill)
 # 
-# Copyright (c) 2000 - 2014 The Regents of the University of California.
+# Copyright (c) 2000 - 2011 The Regents of the University of California.
 # All rights reserved.	
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -25,7 +24,7 @@
 # 3. All advertising and press materials, printed or electronic, mentioning
 # features or use of this software must display the following acknowledgement: 
 # 
-# 	"This product includes software developed by the Rocks(r)
+# 	"This product includes software developed by the Rocks(tm)
 # 	Cluster Group at the San Diego Supercomputer Center at the
 # 	University of California, San Diego and its contributors."
 # 
@@ -54,16 +53,26 @@
 # 
 # @Copyright@
 #
-# $Log$
+#
 #
 
--include $(shell $(ROCKSROOT)/bin/arch).mk
--include $(shell $(ROCKSROOT)/bin/os).mk
+-include $(shell ${ROCKSROOT}/bin/arch).mk
+-include $(shell ${ROCKSROOT}/bin/os).mk
+
+MPI_FLAVORS = mvapich2 openmpi
 
 default:
 	@echo "copyright|rpm|pkg|clean"
 
-copyright pkg rpm clean::
+copyright rpm pkg clean::
 	for i in $(SRCDIRS); do \
-	  (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" $@) || exit 2; \
+	  grep -q ROLLCOMPILER $$i/version.mk; \
+	  if test $$? -eq 0; then \
+	    for c in $(ROLLCOMPILER); do \
+	        echo make $@ in $$i with ROLLCOMPILER=$$c; \
+	        (cd $$i && $(MAKE) ROLLCOMPILER=$$c $@) || exit 2; \
+	    done; \
+	  else \
+	    (cd $$i && $(MAKE) ROLLCOMPILER="$(ROLLCOMPILER)" $@) || exit 2; \
+	  fi; \
 	done
