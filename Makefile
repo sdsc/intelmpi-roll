@@ -69,6 +69,7 @@ default:
           export o=`echo $$i | sed 's/\.in//'`; \
           cp $$i $$o; \
           for c in $(ROLLCOMPILER); do \
+            echo "COMPILER $$c"; \
             COMPILERNAME=`echo $$c | awk -F/ '{print $$1}'`; \
             perl -pi -e "print and s/COMPILERNAME/$${COMPILERNAME}/g if m/COMPILERNAME/" $$o; \
           done; \
