@@ -81,10 +81,13 @@ build: $(SRC_DIRS)
 	@echo "::: Package $(NAME) build complete :::"
 
 install::
+	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	$(PKGROOT_BIND_MOUNT)
 	( \
             cd $(SOURCE_DIR); \
             ./install.sh --silent silent.cfg \
         )
+	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
