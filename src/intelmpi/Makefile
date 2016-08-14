@@ -76,16 +76,18 @@ LICENSE: $(SRC_DIRS)
 
 build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/silent.cfg patch-files/silent.cfg.patch
-	perl -pi -e "s!PKGROOT!$(ROOT)/$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg
+	perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg
 	perl -pi -e "s!LICENSEPATH!`cat licensepath.txt`!g" $(SOURCE_DIR)/silent.cfg
 	@echo "::: Package $(NAME) build complete :::"
 
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
+	$(PKGROOT_BIND_MOUNT)
 	( \
             cd $(SOURCE_DIR); \
             ./install.sh --silent silent.cfg \
         )
+	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
