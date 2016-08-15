@@ -80,7 +80,7 @@ default:
 	$(MAKE) PACKAGES=$(PACKAGES) ROLLCOMPILER="$(ROLLCOMPILER)" roll
 	rpmfiles=`cat rpmnames`; \
         for rpmfile in $$rpmfiles; do \
-           rpm -e --nodeps  `basename $$rpmfile|sed 's/.rpm//'`
+           rpm -e --nodeps  `basename $$rpmfile|sed 's/.rpm//'`  \
         done
         
 
