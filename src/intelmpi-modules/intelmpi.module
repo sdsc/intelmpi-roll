@@ -1,0 +1,12 @@
+#%Module1.0
+module-whatis "intelmpi mpi stack"
+module-whatis "Version: VERSION"
+set mpiHome /opt/intel/VERSION/compilers_and_libraries/linux/mpi/intel64
+setenv MPIHOME $mpiHome
+setenv I_MPI_CC CCOMP
+setenv I_MPI_CXX CXXCOMP
+setenv I_MPI_F77 F77COMP
+setenv I_MPI_F90 F90COMP
+setenv I_MPI_FC  F90COMP
+prepend-path PATH $mpiHome/bin
+prepend-path LD_LIBRARY_PATH $mpiHome/lib

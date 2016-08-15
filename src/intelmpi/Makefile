@@ -1,7 +1,7 @@
 #
 # $Id$
 #
-# @Copyright@
+# @Copyrighl@
 # 
 # 				Rocks(r)
 # 		         www.rocksclusters.org
@@ -63,6 +63,11 @@ include $(SDSCDEVEL)/Rules.mk
 
 $(NAME).spec: DESCRIPTION LICENSE
 
+BUILDIT = 1
+TEMP_DIRS = $(REDHAT.ROOT)/src
+MANIFEST_DIR = $(REDHAT.ROOT)
+NODE_FILE = $(REDHAT.ROOT)/nodes/intelmpi-install.xml
+
 DESCRIPTION:
 	$(MODULE_LOAD_CC); \
 	( \
@@ -78,18 +83,70 @@ build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/silent.cfg patch-files/silent.cfg.patch
 	perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg
 	perl -pi -e "s!LICENSEPATH!`cat licensepath.txt`!g" $(SOURCE_DIR)/silent.cfg
+	( \
+           cd $(SOURCE_DIR); \
+           ./install.sh --silent silent.cfg; \
+           ls rpm/*.rpm > $(REDHAT.ROOT)/rpmnames; \
+           packageCount=1; \
+           mkdir  -p $(TEMP_DIRS)/build-intelmpi$${packageCount}; \
+           echo build-intelmpi_$${packageCount} >> $(MANIFEST_DIR)/manifest; \
+           cd  $(PKGROOT); \
+           find . ! -type d -exec ls -l {} \; >$(TEMP_DIRS)/$$$$.tmp; \
+           find . \( -name .\* -a ! -type d \) -exec ls -l {} \; >>$(TEMP_DIRS)/$$$$.tmp; \
+           sum=0; \
+           total=`du -b -s|awk '{print $$1}'`; \
+           maxPackageSize=$$(( $$total / ( $(PACKAGES) ) )); \
+           echo "MAX SIZE=$$maxPackageSize"; \
+           exec <$(TEMP_DIRS)/$$$$.tmp; \
+           cat /dev/null > $(TEMP_DIRS)/.files; \
+           sum=0; \
+           total=`du -b -s|awk '{print $$1}'`; \
+           maxPackageSize=$$(( $$total / ( $(PACKAGES) ) )); \
+           echo "MAX SIZE=$$maxPackageSize"; \
+           exec <$(TEMP_DIRS)/$$$$.tmp; \
+           cat /dev/null > $(TEMP_DIRS)/.files; \
+           while read line; do \
+               fileSize=`echo $$line |awk '{print $$5}'`; \
+               fileName=`echo $$line |awk '{print $$9}'`; \
+               sum=$$(( $$sum + $$fileSize )); \
+               if test $$sum -ge $$maxPackageSize; then \
+                  sum=$$(( $$sum - $$fileSize )); \
+                  echo "NEW PACKAGE: OLD SUM $$sum"; \
+                  tar cvf $(TEMP_DIRS)/package.tar `cat $(TEMP_DIRS)/.files`; \
+                  cd $(TEMP_DIRS)/build-intelmpi$$packageCount; \
+                  tar xvf $(TEMP_DIRS)/package.tar; \
+                  cd $(PKGROOT); \
+                  sum=$$fileSize; \
+                  packageCount=$$(( $$packageCount + 1 )); \
+                  mkdir  -p $(TEMP_DIRS)/build-intelmpi$$packageCount; \
+                  cat /dev/null > $(TEMP_DIRS)/.files; \
+               fi; \
+               echo $$fileName >> $(TEMP_DIRS)/.files; \
+           done; \
+           echo $$packageCount > $(TEMP_DIRS)/packageCount; \
+           tar cvf $(TEMP_DIRS)/package.tar `cat $(TEMP_DIRS)/.files`; \
+           cd $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
+           tar xvf $(TEMP_DIRS)/package.tar; \
+           cd $(PKGROOT); \
+           rm -f $(TEMP_DIRS)/$$$$.tmp; \
+           rm -f $(TEMP_DIRS)/.files; \
+           rm -f $(TEMP_DIRS)/package.tar \
+        )
+	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) build complete :::"
 
 install::
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
-	$(PKGROOT_BIND_MOUNT)
+	mkdir  -p -m 755 $(ROOT)/$(PKGROOT)
 	( \
-            cd $(SOURCE_DIR); \
-            ./install.sh --silent silent.cfg \
+          packageCount=`cat $(TEMP_DIRS)/packageCount`; \
+          echo $$packageCount; \
+          exit; \
+          for PACKAGE in `seq 1 $${packageCount}`; do \
+               perl -pi -e "print and s/$(NAME)_PACKAGE/$(NAME)_$${PACKAGE}/ if m/$(NAME)_PACKAGE/" $(NODE_FILE); \
+          done; \
+          perl -pi -e '$$_ = "" if m/$(NAME)_PACKAGE/' $(NODE_FILE) \
         )
-	$(PKGROOT_BIND_UMOUNT)
-	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) DESCRIPTION LICENSE
+	rm -rf $(SOURCE_DIR) $(TEMP_DIRS)/*.tmp $(TEMP_DIRS)/build-*  DESCRIPTION LICENSE

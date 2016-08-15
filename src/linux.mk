@@ -1,4 +1,6 @@
 SRCDIRS = `find * -prune\
 	  -type d 	\
 	  ! -name CVS	\
-	  ! -name .`
+          -not -name intempi-rpms \
+          -not -name build-\* \
+	  ! -name .` intelmpi-rpms

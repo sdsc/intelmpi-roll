@@ -56,35 +56,34 @@
 #
 # $Log$
 #
+#
+REDHAT.ROOT = $(CURDIR)/../../
+NODE_FILE = $(REDHAT.ROOT)/nodes/intelmpi-install.xml
+MANIFEST_DIR = $(REDHAT.ROOT)
 
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-
--include $(ROLLSROOT)/etc/Rolls.mk
-include Rolls.mk
-
-PACKAGES=18
-
-default:
-	for i in `ls nodes/*.in`; do \
-          export o=`echo $$i | sed 's/\.in//'`; \
-          cp $$i $$o; \
-          for c in $(ROLLCOMPILER); do \
-            echo "COMPILER $$c"; \
-            COMPILERNAME=`echo $$c | awk -F/ '{print $$1}'`; \
-            perl -pi -e "print and s/COMPILERNAME/$${COMPILERNAME}/g if m/COMPILERNAME/" $$o; \
-          done; \
-          perl -pi -e '$$_ = "" if m/COMPILERNAME/' $$o; \
-        done
-	$(MAKE) PACKAGES=$(PACKAGES) ROLLCOMPILER="$(ROLLCOMPILER)" roll
-        rpmfiles=`cat rpmfiles`; \
-        for rpmfile in $$rpmfiles; do \
-           rpm -e `basename $rpmfile` ; \
-        done
-        
+-include $(ROCKSROOT)/etc/Rules.mk
+include Rules.mk
+include $(SDSCDEVEL)/Pull.mk
+include $(SDSCDEVEL)/Rules.mk
 
 
-distclean:: clean
-	-rm -f _arch build.log
-	-rm -rf RPMS SRPMS rpmnames src/build-* src/*.tmp src/packageCount
+TEMP_DIRS = $(REDHAT.ROOT)/src
+BUILDIT = 1
+
+build:
+
+install:: 
+	mkdir  -p -m 755 $(ROOT)/$(PKGROOT)
+	( \
+           if test $(BUILDIT) -eq 1; then \
+             packageCount=`cat $(TEMP_DIRS)/packageCount`; \
+             for PACKAGE in `seq 1 $${packageCount}`; do \
+               make NAME=$(NAME)_$${PACKAGE} BUILDDIR=build-intelmpi_$${PACKAGE} BUILDIT=0 rpm; \
+             done; \
+           else \
+             cp -r $(TEMP_DIRS)/$(BUILDDIR)/* -d $(ROOT)/$(PKGROOT); \
+           fi  \
+        )
+	@echo "::: Package $(NAME) install complete :::"
+
+clean::
