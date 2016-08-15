@@ -139,8 +139,6 @@ install::
 	mkdir  -p -m 755 $(ROOT)/$(PKGROOT)
 	( \
           packageCount=`cat $(TEMP_DIRS)/packageCount`; \
-          echo $$packageCount; \
-          exit; \
           for PACKAGE in `seq 1 $${packageCount}`; do \
                perl -pi -e "print and s/$(NAME)_PACKAGE/$(NAME)_$${PACKAGE}/ if m/$(NAME)_PACKAGE/" $(NODE_FILE); \
           done; \
