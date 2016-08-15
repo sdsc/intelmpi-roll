@@ -78,9 +78,9 @@ default:
           perl -pi -e '$$_ = "" if m/COMPILERNAME/' $$o; \
         done
 	$(MAKE) PACKAGES=$(PACKAGES) ROLLCOMPILER="$(ROLLCOMPILER)" roll
-	rpmfiles=`cat rpmfiles`; \
+	rpmfiles=`cat rpmnames`; \
         for rpmfile in $$rpmfiles; do \
-           rpm -e `basename $rpmfile` ; \
+           rpm -e --nodeps  `basename $$rpmfile|sed 's/.rpm//'`
         done
         
 
