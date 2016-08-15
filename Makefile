@@ -87,4 +87,4 @@ default:
 
 distclean:: clean
 	-rm -f _arch build.log
-	-rm -rf RPMS SRPMS rpmnames src/build-* src/*.tmp src/packageCount
+	-rm -rf RPMS SRPMS rpmnames src/build-* src/*.tmp src/packageCount manifest

@@ -88,7 +88,7 @@ build: $(SRC_DIRS)
            ./install.sh --silent silent.cfg; \
            ls rpm/*.rpm > $(REDHAT.ROOT)/rpmnames; \
            packageCount=1; \
-           mkdir  -p $(TEMP_DIRS)/build-intelmpi$${packageCount}; \
+           mkdir  -p $(TEMP_DIRS)/build-intelmpi_$${packageCount}; \
            echo build-intelmpi_$${packageCount} >> $(MANIFEST_DIR)/manifest; \
            cd  $(PKGROOT); \
            find . ! -type d -exec ls -l {} \; >$(TEMP_DIRS)/$$$$.tmp; \
@@ -113,12 +113,12 @@ build: $(SRC_DIRS)
                   sum=$$(( $$sum - $$fileSize )); \
                   echo "NEW PACKAGE: OLD SUM $$sum"; \
                   tar cvf $(TEMP_DIRS)/package.tar `cat $(TEMP_DIRS)/.files`; \
-                  cd $(TEMP_DIRS)/build-intelmpi$$packageCount; \
+                  cd $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
                   tar xvf $(TEMP_DIRS)/package.tar; \
                   cd $(PKGROOT); \
                   sum=$$fileSize; \
                   packageCount=$$(( $$packageCount + 1 )); \
-                  mkdir  -p $(TEMP_DIRS)/build-intelmpi$$packageCount; \
+                  mkdir  -p $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
                   cat /dev/null > $(TEMP_DIRS)/.files; \
                fi; \
                echo $$fileName >> $(TEMP_DIRS)/.files; \
