@@ -3,14 +3,10 @@ ifndef ROLLCOMPILER
 endif
 COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
 
-ifndef ROLLNETWORK
-  ROLLNETWORK = eth
-endif
-
 PACKAGE     = intelmpi
 CATEGORY    = mpi
 
-NAME        = sdsc-$(PACKAGE)-modules_intelmpi
+NAME        = sdsc-$(PACKAGE)-modules_$(COMPILERNAME)
 RELEASE     = 3
 PKGROOT     = /opt/modulefiles/$(CATEGORY)/.$(COMPILERNAME)/$(PACKAGE)
 

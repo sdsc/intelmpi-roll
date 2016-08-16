@@ -30,6 +30,7 @@ install::
                    -e 's#F90COMP#$(FC)#g;' \
 	       $(ROOT)/$(PKGROOT)/.version.$$V $(ROOT)/$(PKGROOT)/$$V; \
 	   done; \
+           ln -s $(PKGROOT)/.version.$(VERSION) $(ROOT)/$(PKGROOT)/.version; \
         fi
 
 
