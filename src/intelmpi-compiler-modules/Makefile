@@ -8,6 +8,7 @@ $(VERSION_INC): $(VERSION_SRC)
 	/bin/grep 'VERSION.*=' $(VERSION_SRC) > $@
  
 build:
+	YEAR=`echo $(VERSION)|sed 's/\..*//'`
 
 install::
 	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
@@ -21,6 +22,7 @@ install::
                    -e 's#ROLLOPTS#$(ROLLOPTS)#g;' \
                    -e 's#ROLLPY#$(ROLLPY)#g;' \
                    -e "s#VERSION#$$V#g;" \
+                   -e "s#YEAR#$(YEAR)#g;" \
             $(ROOT)/$(PKGROOT)/.version.$$V $(ROOT)/$(PKGROOT)/$$V; \
         done
 
