@@ -23,7 +23,9 @@ install::
                    -e 's#ROLLPY#$(ROLLPY)#g;' \
                    -e "s#VERSION#$$V#g;" \
                    -e "s#YEAR#$(YEAR)#g;" \
+                   -e "s#M_VERS#$(L_MKL_VERSION)#g;" \
             $(ROOT)/$(PKGROOT)/.version.$$V $(ROOT)/$(PKGROOT)/$$V; \
+           perl -pi -e "s#L_MKL_TEMP#L_MKL_VERSION#g;"  $(ROOT)/$(PKGROOT)/$$V; \
         done
 
 

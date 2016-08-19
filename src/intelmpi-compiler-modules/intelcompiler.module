@@ -64,3 +64,4 @@ setenv GDB_CROSS $intelHome/bin/intel64/gdb-mic
 setenv MPM_LAUNCHER $intelPrefix/debugger_YEAR/mpm/intel64_igfx/bin/start_mpm.sh
 setenv INTEL_PYTHONHOME $intelPrefix/debugger_YEAR/gdb/intel64/share/gdb/python
 setenv INFOPATH $intelPrefix/documentation_YEAR/en/debugger/gdb-ia/info/:$intelPrefix/documentation_YEAR/en/debugger/gdb-mic/info
+setenv L_MKL_TEMP = M_VERS
