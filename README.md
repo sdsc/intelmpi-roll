@@ -2,7 +2,7 @@
 
 ## Overview
 
-This roll bundles intelmpi
+This roll bundles a intel compiler/mkl version plus intelmpi
 
 For more information about the various packages included in the intelmpi roll please visit their official web pages:
 
