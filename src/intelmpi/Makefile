@@ -83,6 +83,7 @@ build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/silent.cfg patch-files/silent.cfg.patch
 	perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg
 	perl -pi -e "s!LICENSEPATH!`cat licensepath.txt`!g" $(SOURCE_DIR)/silent.cfg
+	mkdir $(PKGROOT)
 	( \
            cd $(SOURCE_DIR); \
            ./install.sh --silent silent.cfg; \
