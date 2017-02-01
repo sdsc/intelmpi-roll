@@ -82,9 +82,14 @@ LICENSE: $(SRC_DIRS)
 build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/silent.cfg patch-files/silent.cfg.patch
 	perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg
-	perl -pi -e "s!LICENSEPATH!`cat licensepath.txt`!g" $(SOURCE_DIR)/silent.cfg
 	mkdir $(PKGROOT)
 	( \
+           if test -e licensepath.txt; then \
+                perl -pi -e "s!LICENSEPATH!`cat licensepath.txt`!g" $(SOURCE_DIR)/silent.cfg; \
+           else \
+                echo "a license file (licensepath.txt) is required"; \
+                exit; \
+           fi; \
            cd $(SOURCE_DIR); \
            ./install.sh --silent silent.cfg; \
            ls rpm/*.rpm > $(REDHAT.ROOT)/rpmnames; \
