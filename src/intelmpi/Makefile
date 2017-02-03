@@ -85,7 +85,7 @@ build: $(SRC_DIRS)
 	mkdir $(PKGROOT)
 	( \
            if test -z $(LICENSESERVER); then \
-              echo  "Licenseserver address needed: e.g. ROLLOPTS=23000@license.edu"; \
+              echo  "Licenseserver address needed: e.g. ROLLOPTS=23000\\@license.edu"; \
               exit -1; \
            fi; \
            perl -pi -e "s!LICENSEPATH!$(LICENSESERVER)!g" $(SOURCE_DIR)/silent.cfg; \
