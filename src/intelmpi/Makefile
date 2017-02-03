@@ -84,12 +84,11 @@ build: $(SRC_DIRS)
 	perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg
 	mkdir $(PKGROOT)
 	( \
-           if test -e licensepath.txt; then \
-                perl -pi -e "s!LICENSEPATH!`cat licensepath.txt`!g" $(SOURCE_DIR)/silent.cfg; \
-           else \
-                echo "a license file (licensepath.txt) is required"; \
-                exit; \
+           if test -z $(LICENSESERVER); then \
+              echo  "Licenseserver address needed: e.g. ROLLOPTS=23000@license.edu"; \
+              exit -1; \
            fi; \
+           perl -pi -e "s!LICENSEPATH!$(LICENSESERVER)!g" $(SOURCE_DIR)/silent.cfg; \
            cd $(SOURCE_DIR); \
            ./install.sh --silent silent.cfg; \
            ls rpm/*.rpm > $(REDHAT.ROOT)/rpmnames; \
