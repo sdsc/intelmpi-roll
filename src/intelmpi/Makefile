@@ -109,7 +109,7 @@ build: $(SRC_DIRS)
                if test $$sum -ge $$maxPackageSize; then \
                   sum=$$(( $$sum - $$fileSize )); \
                   echo "NEW PACKAGE: OLD SUM $$sum"; \
-                  tar cvf $(TEMP_DIRS)/package.tar `cat $(TEMP_DIRS)/.files`; \
+                  tar cvf $(TEMP_DIRS)/package.tar -T $(TEMP_DIRS)/.files; \
                   cd $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
                   tar xvf $(TEMP_DIRS)/package.tar; \
                   cd $(PKGROOT); \
@@ -121,7 +121,7 @@ build: $(SRC_DIRS)
                echo $$fileName >> $(TEMP_DIRS)/.files; \
            done; \
            echo $$packageCount > $(TEMP_DIRS)/packageCount; \
-           tar cvf $(TEMP_DIRS)/package.tar `cat $(TEMP_DIRS)/.files`; \
+           tar cvf $(TEMP_DIRS)/package.tar -T $(TEMP_DIRS)/.files; \
            cd $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
            tar xvf $(TEMP_DIRS)/package.tar; \
            cd $(PKGROOT); \
