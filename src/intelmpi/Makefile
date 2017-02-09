@@ -65,7 +65,6 @@ $(NAME).spec: DESCRIPTION LICENSE
 
 BUILDIT = 1
 TEMP_DIRS = $(REDHAT.ROOT)/src
-MANIFEST_DIR = $(REDHAT.ROOT)
 NODE_FILE = $(REDHAT.ROOT)/nodes/intelmpi-install.xml
 
 DESCRIPTION:
@@ -94,16 +93,9 @@ build: $(SRC_DIRS)
            ls rpm/*.rpm > $(REDHAT.ROOT)/rpmnames; \
            packageCount=1; \
            mkdir  -p $(TEMP_DIRS)/build-intelmpi_$${packageCount}; \
-           echo build-intelmpi_$${packageCount} >> $(MANIFEST_DIR)/manifest; \
            cd  $(PKGROOT); \
            find . ! -type d -exec ls -l {} \; >$(TEMP_DIRS)/$$$$.tmp; \
            find . \( -name .\* -a ! -type d \) -exec ls -l {} \; >>$(TEMP_DIRS)/$$$$.tmp; \
-           sum=0; \
-           total=`du -b -s|awk '{print $$1}'`; \
-           maxPackageSize=$$(( $$total / ( $(PACKAGES) ) )); \
-           echo "MAX SIZE=$$maxPackageSize"; \
-           exec <$(TEMP_DIRS)/$$$$.tmp; \
-           cat /dev/null > $(TEMP_DIRS)/.files; \
            sum=0; \
            total=`du -b -s|awk '{print $$1}'`; \
            maxPackageSize=$$(( $$total / ( $(PACKAGES) ) )); \
