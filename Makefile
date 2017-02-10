@@ -90,4 +90,4 @@ default:
 distclean:: clean
 	-rm -f _arch build.log
 	-rm -rf RPMS SRPMS rpmnames src/build-* src/*.tmp src/packageCount manifest
-        -rm -rf nodes/intelmpi-install.xml
+	-rm -rf nodes/intelmpi-install.xml
