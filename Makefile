@@ -67,7 +67,7 @@ include Rolls.mk
 RPMS=20
 
 default:
-	cp nodes/intelmpi-install.xml.in nodes/install-install.xml
+	cp nodes/intelmpi-install.xml.in nodes/intelmpi-install.xml
 	for rpm in `seq 2 $(RPMS)`; do \
           perl -pi -e 'print and s/RPM/'$${rpm}'/g if m/RPM/' nodes/intelmpi-install.xml; \
         done; \
