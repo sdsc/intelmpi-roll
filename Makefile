@@ -64,19 +64,15 @@ endif
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
 
-PACKAGES=18
+RPMS=20
 
 default:
-	for i in `ls nodes/*.in`; do \
-          export o=`echo $$i | sed 's/\.in//'`; \
-          cp $$i $$o; \
-          for c in $(ROLLCOMPILER); do \
-            COMPILERNAME=`echo $$c | awk -F/ '{print $$1}'`; \
-            perl -pi -e "print and s/COMPILERNAME/$${COMPILERNAME}/g if m/COMPILERNAME/" $$o; \
-          done; \
-          perl -pi -e '$$_ = "" if m/COMPILERNAME/' $$o; \
-        done
-	$(MAKE) PACKAGES=$(PACKAGES) ROLLCOMPILER="$(ROLLCOMPILER)" roll
+	cp nodes/intelmpi-install.xml.in nodes/install-install.xml
+        for rpm in `seq 2 $(RPMS)`; do \
+          perl -pi -e 'print and s/RPM/'$${rpm}'/g if m/RPM/' nodes/intelmpi-install.xml; \
+        done; \
+        perl -pi -e '$$_ = "" if m/RPM/' nodes/intelmpi-install.xml; \
+	$(MAKE) RPMS=$(RPMS) ROLLCOMPILER="$(ROLLCOMPILER)" roll
 	rpmfiles=`cat rpmnames`; \
         for rpmfile in $$rpmfiles; do \
            base=`basename $$rpmfile|sed 's/.rpm//'`; \

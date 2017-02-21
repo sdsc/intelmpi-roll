@@ -63,9 +63,9 @@ include $(SDSCDEVEL)/Rules.mk
 
 $(NAME).spec: DESCRIPTION LICENSE
 
-BUILDIT = 1
+RPMS = 20
+RPM_TO_BUILD = 1
 TEMP_DIRS = $(REDHAT.ROOT)/src
-NODE_FILE = $(REDHAT.ROOT)/nodes/intelmpi-install.xml
 
 DESCRIPTION:
 	$(MODULE_LOAD_CC); \
@@ -79,69 +79,37 @@ LICENSE: $(SRC_DIRS)
 	echo intel > $@
 
 build: $(SRC_DIRS)
-	patch $(SOURCE_DIR)/silent.cfg patch-files/silent.cfg.patch
-	perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg
-	mkdir $(PKGROOT)
-	( \
-           if test -z $(LICENSESERVER); then \
+        if test "$(RPM_TO_BUILD)" = "1"; then \
+            patch $(SOURCE_DIR)/silent.cfg patch-files/silent.cfg.patch; \
+            perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg; \
+            mkdir $(PKGROOT); \
+            if test -z $(LICENSESERVER); then \
               echo  "Licenseserver address needed: e.g. ROLLOPTS=23000\\@license.edu"; \
               exit -1; \
-           fi; \
-           perl -pi -e "s!LICENSEPATH!$(LICENSESERVER)!g" $(SOURCE_DIR)/silent.cfg; \
+            fi; \
+            perl -pi -e "s!LICENSEPATH!$(LICENSESERVER)!g" $(SOURCE_DIR)/silent.cfg; \
            cd $(SOURCE_DIR); \
            ./install.sh --silent silent.cfg; \
            ls rpm/*.rpm > $(REDHAT.ROOT)/rpmnames; \
-           packageCount=1; \
-           mkdir  -p $(TEMP_DIRS)/build-intelmpi_$${packageCount}; \
-           cd  $(PKGROOT); \
-           find . ! -type d -exec ls -l {} \; >$(TEMP_DIRS)/$$$$.tmp; \
-           find . \( -name .\* -a ! -type d \) -exec ls -l {} \; >>$(TEMP_DIRS)/$$$$.tmp; \
-           sum=0; \
-           total=`du -b -s|awk '{print $$1}'`; \
-           maxPackageSize=$$(( $$total / ( $(PACKAGES) ) )); \
-           echo "MAX SIZE=$$maxPackageSize"; \
-           exec <$(TEMP_DIRS)/$$$$.tmp; \
-           cat /dev/null > $(TEMP_DIRS)/.files; \
-           while read line; do \
-               fileSize=`echo $$line |awk '{print $$5}'`; \
-               fileName=`echo $$line |awk '{print $$9}'`; \
-               sum=$$(( $$sum + $$fileSize )); \
-               if test $$sum -ge $$maxPackageSize; then \
-                  sum=$$(( $$sum - $$fileSize )); \
-                  echo "NEW PACKAGE: OLD SUM $$sum"; \
-                  tar cvf $(TEMP_DIRS)/package.tar -T $(TEMP_DIRS)/.files; \
-                  cd $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
-                  tar xvf $(TEMP_DIRS)/package.tar; \
-                  cd $(PKGROOT); \
-                  sum=$$fileSize; \
-                  packageCount=$$(( $$packageCount + 1 )); \
-                  mkdir  -p $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
-                  cat /dev/null > $(TEMP_DIRS)/.files; \
-               fi; \
-               echo $$fileName >> $(TEMP_DIRS)/.files; \
-           done; \
-           echo $$packageCount > $(TEMP_DIRS)/packageCount; \
-           tar cvf $(TEMP_DIRS)/package.tar -T $(TEMP_DIRS)/.files; \
-           cd $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
-           tar xvf $(TEMP_DIRS)/package.tar; \
-           cd $(PKGROOT); \
-           rm -f $(TEMP_DIRS)/$$$$.tmp; \
-           rm -f $(TEMP_DIRS)/.files; \
-           rm -f $(TEMP_DIRS)/package.tar \
+        fi
         )
-	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) build complete :::"
 
 install::
 	mkdir  -p -m 755 $(ROOT)/$(PKGROOT)
 	( \
-          packageCount=`cat $(TEMP_DIRS)/packageCount`; \
-          for PACKAGE in `seq 1 $${packageCount}`; do \
-               perl -pi -e "print and s/$(NAME)_PACKAGE/$(NAME)_$${PACKAGE}/ if m/$(NAME)_PACKAGE/" $(NODE_FILE); \
-          done; \
-          perl -pi -e '$$_ = "" if m/$(NAME)_PACKAGE/' $(NODE_FILE) \
+          cd $(PKGROOT); \
+          find . -type f | sort | perl -e 'for(my $$i=0;<>;$$i++){chomp and `/bin/cp --parents "$$_" $(ROOT)/$(PKGROOT)/` if $$i%$(RPMS)+1 == $(RPM_TO_BUILD);}'; \
         )
-	@echo "::: Package $(NAME) install complete :::"
+	if test "$(RPM_TO_BUILD)" = "1"; then \
+          for rpm in `seq 2 $(RPMS)`; do \
+            echo $(MAKE) NAME=$(NAME)_$$rpm RPM_TO_BUILD=$$rpm rpm; \
+            $(MAKE) NAME=$(NAME)_$$rpm RPM_TO_BUILD=$$rpm rpm; \
+          done; \
+          $(INSTALL_LICENSE_FILES); \
+        fi
+        @echo "::: Package $(NAME) install complete :::"
+
 
 clean::
 	rm -rf $(SOURCE_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)

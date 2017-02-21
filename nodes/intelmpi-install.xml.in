@@ -12,7 +12,8 @@
 	All rights reserved. Rocks(r) v6.1.1 www.rocksclusters.org
 	</copyright>
 
-	<package>sdsc-intelmpi_PACKAGE</package>
+	<package>sdsc-intelmpi</package>
+	<package>sdsc-intelmpi_RPM</package>
 	<package>sdsc-intelmpi-modules_COMPILERNAME</package>
 	<package>sdsc-intelmpi-mkl-modules</package>
 	<package>sdsc-intelmpi-compiler-modules</package>
