@@ -79,7 +79,7 @@ LICENSE: $(SRC_DIRS)
 	echo intel > $@
 
 build: $(SRC_DIRS)
-        if test "$(RPM_TO_BUILD)" = "1"; then \
+	if test "$(RPM_TO_BUILD)" = "1"; then \
             patch $(SOURCE_DIR)/silent.cfg patch-files/silent.cfg.patch; \
             perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg; \
             mkdir $(PKGROOT); \
@@ -92,7 +92,6 @@ build: $(SRC_DIRS)
            ./install.sh --silent silent.cfg; \
            ls rpm/*.rpm > $(REDHAT.ROOT)/rpmnames; \
         fi
-        )
 	@echo "::: Package $(NAME) build complete :::"
 
 install::
@@ -108,7 +107,7 @@ install::
           done; \
           $(INSTALL_LICENSE_FILES); \
         fi
-        @echo "::: Package $(NAME) install complete :::"
+	@echo "::: Package $(NAME) install complete :::"
 
 
 clean::

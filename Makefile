@@ -68,11 +68,11 @@ RPMS=20
 
 default:
 	cp nodes/intelmpi-install.xml.in nodes/install-install.xml
-        for rpm in `seq 2 $(RPMS)`; do \
+	for rpm in `seq 2 $(RPMS)`; do \
           perl -pi -e 'print and s/RPM/'$${rpm}'/g if m/RPM/' nodes/intelmpi-install.xml; \
         done; \
         perl -pi -e '$$_ = "" if m/RPM/' nodes/intelmpi-install.xml; \
-	$(MAKE) RPMS=$(RPMS) ROLLCOMPILER="$(ROLLCOMPILER)" roll
+	$(MAKE) RPMS=$(RPMS) ROLLCOMPILER="$(ROLLCOMPILER)" roll; \
 	rpmfiles=`cat rpmnames`; \
         for rpmfile in $$rpmfiles; do \
            base=`basename $$rpmfile|sed 's/.rpm//'`; \
@@ -80,8 +80,6 @@ default:
               rpm -e --nodeps  $$base ;  \
            fi; \
         done
-        
-
 
 distclean:: clean
 	-rm -f _arch build.log
