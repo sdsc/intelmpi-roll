@@ -71,7 +71,6 @@ default:
           export o=`echo $$i | sed 's/\.in//'`; \
           cp $$i $$o; \
           for c in $(ROLLCOMPILER); do \
-            echo "COMPILER $$c"; \
             COMPILERNAME=`echo $$c | awk -F/ '{print $$1}'`; \
             perl -pi -e "print and s/COMPILERNAME/$${COMPILERNAME}/g if m/COMPILERNAME/" $$o; \
           done; \
@@ -80,7 +79,10 @@ default:
 	$(MAKE) PACKAGES=$(PACKAGES) ROLLCOMPILER="$(ROLLCOMPILER)" roll
 	rpmfiles=`cat rpmnames`; \
         for rpmfile in $$rpmfiles; do \
-           rpm -e --nodeps  `basename $$rpmfile|sed 's/.rpm//'` 2>/dev/null;  \
+           base=`basename $$rpmfile|sed 's/.rpm//'`; \
+           if test ! -z "`rpm -qa |grep $$base`"; then \
+              rpm -e --nodeps  $$base ;  \
+           fi; \
         done
         
 
@@ -88,3 +90,4 @@ default:
 distclean:: clean
 	-rm -f _arch build.log
 	-rm -rf RPMS SRPMS rpmnames src/build-* src/*.tmp src/packageCount manifest
+	-rm -rf nodes/intelmpi-install.xml

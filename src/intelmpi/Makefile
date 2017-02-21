@@ -65,7 +65,6 @@ $(NAME).spec: DESCRIPTION LICENSE
 
 BUILDIT = 1
 TEMP_DIRS = $(REDHAT.ROOT)/src
-MANIFEST_DIR = $(REDHAT.ROOT)
 NODE_FILE = $(REDHAT.ROOT)/nodes/intelmpi-install.xml
 
 DESCRIPTION:
@@ -82,23 +81,21 @@ LICENSE: $(SRC_DIRS)
 build: $(SRC_DIRS)
 	patch $(SOURCE_DIR)/silent.cfg patch-files/silent.cfg.patch
 	perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg
-	perl -pi -e "s!LICENSEPATH!`cat licensepath.txt`!g" $(SOURCE_DIR)/silent.cfg
+	mkdir $(PKGROOT)
 	( \
+           if test -z $(LICENSESERVER); then \
+              echo  "Licenseserver address needed: e.g. ROLLOPTS=23000\\@license.edu"; \
+              exit -1; \
+           fi; \
+           perl -pi -e "s!LICENSEPATH!$(LICENSESERVER)!g" $(SOURCE_DIR)/silent.cfg; \
            cd $(SOURCE_DIR); \
            ./install.sh --silent silent.cfg; \
            ls rpm/*.rpm > $(REDHAT.ROOT)/rpmnames; \
            packageCount=1; \
            mkdir  -p $(TEMP_DIRS)/build-intelmpi_$${packageCount}; \
-           echo build-intelmpi_$${packageCount} >> $(MANIFEST_DIR)/manifest; \
            cd  $(PKGROOT); \
            find . ! -type d -exec ls -l {} \; >$(TEMP_DIRS)/$$$$.tmp; \
            find . \( -name .\* -a ! -type d \) -exec ls -l {} \; >>$(TEMP_DIRS)/$$$$.tmp; \
-           sum=0; \
-           total=`du -b -s|awk '{print $$1}'`; \
-           maxPackageSize=$$(( $$total / ( $(PACKAGES) ) )); \
-           echo "MAX SIZE=$$maxPackageSize"; \
-           exec <$(TEMP_DIRS)/$$$$.tmp; \
-           cat /dev/null > $(TEMP_DIRS)/.files; \
            sum=0; \
            total=`du -b -s|awk '{print $$1}'`; \
            maxPackageSize=$$(( $$total / ( $(PACKAGES) ) )); \
@@ -112,7 +109,7 @@ build: $(SRC_DIRS)
                if test $$sum -ge $$maxPackageSize; then \
                   sum=$$(( $$sum - $$fileSize )); \
                   echo "NEW PACKAGE: OLD SUM $$sum"; \
-                  tar cvf $(TEMP_DIRS)/package.tar `cat $(TEMP_DIRS)/.files`; \
+                  tar cvf $(TEMP_DIRS)/package.tar -T $(TEMP_DIRS)/.files; \
                   cd $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
                   tar xvf $(TEMP_DIRS)/package.tar; \
                   cd $(PKGROOT); \
@@ -124,7 +121,7 @@ build: $(SRC_DIRS)
                echo $$fileName >> $(TEMP_DIRS)/.files; \
            done; \
            echo $$packageCount > $(TEMP_DIRS)/packageCount; \
-           tar cvf $(TEMP_DIRS)/package.tar `cat $(TEMP_DIRS)/.files`; \
+           tar cvf $(TEMP_DIRS)/package.tar -T $(TEMP_DIRS)/.files; \
            cd $(TEMP_DIRS)/build-intelmpi_$$packageCount; \
            tar xvf $(TEMP_DIRS)/package.tar; \
            cd $(PKGROOT); \
@@ -147,4 +144,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) $(TEMP_DIRS)/*.tmp $(TEMP_DIRS)/build-*  DESCRIPTION LICENSE
+	rm -rf $(SOURCE_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)

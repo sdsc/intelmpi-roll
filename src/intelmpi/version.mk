@@ -1,6 +1,9 @@
+ifneq ("$(ROLLOPTS)", "$(subst licenseserver=,,$(ROLLOPTS))")
+  LICENSESERVER = $(subst licenseserver=,,$(filter licenseserver=%,$(ROLLOPTS)))
+endif
 NAME           = sdsc-intelmpi
 VERSION        = 2016.3.210
-RELEASE        = 1
+RELEASE        = 2
 PKGROOT        = /opt/intel/$(VERSION)
 
 SRC_SUBDIR     = intelmpi
