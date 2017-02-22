@@ -64,7 +64,7 @@ endif
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
 
-RPMS=20
+RPMS=10
 
 default:
 	cp nodes/intelmpi-install.xml.in nodes/intelmpi-install.xml
