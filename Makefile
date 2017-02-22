@@ -79,8 +79,8 @@ default:
            if test ! -z "`rpm -qa |grep $$base`"; then \
               rpm -e --nodeps  $$base ;  \
            fi; \
-        done \
-        rm -rf $(PKGROOT)
+        done
+	rm -rf $(PKGROOT)
 
 distclean:: clean
 	-rm -f _arch build.log
