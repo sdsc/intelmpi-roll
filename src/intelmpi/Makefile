@@ -111,4 +111,4 @@ install::
 
 
 clean::
-	rm -rf $(SOURCE_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)
+	rm -rf $(SOURCE_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE
