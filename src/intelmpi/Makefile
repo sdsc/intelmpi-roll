@@ -63,7 +63,6 @@ include $(SDSCDEVEL)/Rules.mk
 
 $(NAME).spec: DESCRIPTION LICENSE
 
-RPMS = 20
 RPM_TO_BUILD = 1
 TEMP_DIRS = $(REDHAT.ROOT)/src
 
