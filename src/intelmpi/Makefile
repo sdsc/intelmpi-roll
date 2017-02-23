@@ -101,8 +101,8 @@ install::
         )
 	if test "$(RPM_TO_BUILD)" = "1"; then \
           for rpm in `seq 2 $(RPMS)`; do \
-            echo $(MAKE) NAME=$(NAME)_$$rpm RPM_TO_BUILD=$$rpm rpm; \
-            $(MAKE) NAME=$(NAME)_$$rpm RPM_TO_BUILD=$$rpm rpm; \
+            echo $(MAKE) NAME=$(NAME)_$$rpm RPM_TO_BUILD=$$rpm RPM.EXTRAS="AutoReq:No \n %define         __prelink_undo_cmd     %{nil}" rpm; \
+            $(MAKE) NAME=$(NAME)_$$rpm RPM_TO_BUILD=$$rpm RPM.EXTRAS="AutoReq:No \n %define         __prelink_undo_cmd     %{nil}" rpm; \
           done; \
           $(INSTALL_LICENSE_FILES); \
         fi
