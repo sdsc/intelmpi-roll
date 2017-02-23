@@ -80,7 +80,6 @@ default:
               rpm -e --nodeps  $$base ;  \
            fi; \
         done
-	rm -rf $(PKGROOT)
 
 distclean:: clean
 	-rm -f _arch build.log
