@@ -97,13 +97,15 @@ install::
 	mkdir  -p -m 755 $(ROOT)/$(PKGROOT)
 	( \
           cd $(PKGROOT); \
-          find -L . -type f  | sort | perl -e 'for(my $$i=0;<>;$$i++){chomp and `/bin/cp --parents "$$_" $(ROOT)/$(PKGROOT)/` if $$i%$(RPMS)+1 == $(RPM_TO_BUILD);}'; \
+          find . \( -type f -o -type l \)  | sort | perl -e 'for(my $$i=0;<>;$$i++){chomp and `/bin/cp --parents "$$_" $(ROOT)/$(PKGROOT)/` if $$i%$(RPMS)+1 == $(RPM_TO_BUILD);}'; \
         )
 	if test "$(RPM_TO_BUILD)" = "1"; then \
           for rpm in `seq 2 $(RPMS)`; do \
             echo $(MAKE) NAME=$(NAME)_$$rpm RPM_TO_BUILD=$$rpm RPM.EXTRAS="AutoReq:No \n %define         __prelink_undo_cmd     %{nil}" rpm; \
             $(MAKE) NAME=$(NAME)_$$rpm RPM_TO_BUILD=$$rpm RPM.EXTRAS="AutoReq:No \n %define         __prelink_undo_cmd     %{nil}" rpm; \
           done; \
+          cd $(PKGROOT); \
+          find . -maxdepth 1 -type l -exec sh -c "tar cvf - {}  | (cd $(ROOT)/$(PKGROOT);tar xvf - )" \;
           $(INSTALL_LICENSE_FILES); \
         fi
 	@echo "::: Package $(NAME) install complete :::"
