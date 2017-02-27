@@ -97,7 +97,7 @@ install::
 	mkdir  -p -m 755 $(ROOT)/$(PKGROOT)
 	( \
           cd $(PKGROOT); \
-          find . \( -type f -o -type l \)  | sort | perl -e 'for(my $$i=0;<>;$$i++){chomp and `/bin/cp --parents "$$_" $(ROOT)/$(PKGROOT)/` if $$i%$(RPMS)+1 == $(RPM_TO_BUILD);}'; \
+          find -L . -type f  | sort | perl -e 'for(my $$i=0;<>;$$i++){chomp and `/bin/cp --parents "$$_" $(ROOT)/$(PKGROOT)/` if $$i%$(RPMS)+1 == $(RPM_TO_BUILD);}'; \
         )
 	if test "$(RPM_TO_BUILD)" = "1"; then \
           for rpm in `seq 2 $(RPMS)`; do \
