@@ -1,0 +1,17 @@
+inspector_xe_2016.1.3.460803 inspector_xe_2016
+advisor_xe_2016.1.40.463413 advisor_xe_2016
+vtune_amplifier_xe_2016.3.0.463186 vtune_amplifier_xe_2016
+tac/9.1.2.024 itac_latest
+itac/9.1.2.024 itac_9.1
+clck/3.1.2.006 clck_latest
+advisor_xe_2016.1.40.463413 advisor_xe
+inspector_xe_2016.1.3.460803 inspector_xe
+vtune_amplifier_xe_2016.3.0.463186 vtune_amplifier_xe
+compilers_and_libraries_2016 compilers_and_libraries
+compilers_and_libraries/linux/ipp ipp
+compilers_and_libraries/linux/tbb tbb
+compilers_and_libraries/linux/man man
+compilers_and_libraries/linux/mkl mkl
+compilers_and_libraries/linux/include include
+compilers_and_libraries/linux/daal 
+compilers_and_libraries/linux/lib lib
