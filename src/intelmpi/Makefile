@@ -106,7 +106,7 @@ install::
           done; \
 	  cd $(ROOT)/$(PKGROOT); \
           cat $(PWD)/symlinkfiles | perl -e 'for(my $$i=0;<>;$$i++){chomp and @temp=split(" ",$$_); `ln -s $$temp[0] $$temp[1]`}'; \
-        fi; \
+        fi
 	@echo "::: Package $(NAME) install complete :::"
 
 
