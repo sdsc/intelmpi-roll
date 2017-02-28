@@ -105,7 +105,7 @@ install::
             $(MAKE) NAME=$(NAME)_$$rpm RPM_TO_BUILD=$$rpm RPM.EXTRAS="AutoReq:No \n %define         __prelink_undo_cmd     %{nil}" rpm; \
           done; \
 	  cd $(ROOT)/$(PKGROOT); \
-          cat $(PWD)/symlinkfiles | perl -e 'for(my $$i=0;<>;$$i++){chomp and @temp=split(" ",$$_); `ln -s $$temp[0] $$temp[1]`}'
+          cat $(PWD)/symlinkfiles | perl -e 'for(my $$i=0;<>;$$i++){chomp and @temp=split(" ",$$_); `ln -s $$temp[0] $$temp[1]`}'; \
         fi; \
 	@echo "::: Package $(NAME) install complete :::"
 
