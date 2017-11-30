@@ -3,7 +3,7 @@ ifneq ("$(ROLLOPTS)", "$(subst licenseserver=,,$(ROLLOPTS))")
 endif
 NAME           = sdsc-intelmpi
 VERSION        = 2016.3.210
-RELEASE        = 2
+RELEASE        = 3
 PKGROOT        = /opt/intel/$(VERSION)
 
 SRC_SUBDIR     = intelmpi
@@ -18,3 +18,4 @@ SOURCE_DIR     = $(SOURCE_PKG:%.$(SOURCE_SUFFIX)=%)
 TAR_GZ_PKGS       = $(SOURCE_PKG)
 
 RPM.EXTRAS     = AutoReq:No
+RPM.PREFIX     = $(PKGROOT)
