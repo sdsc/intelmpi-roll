@@ -63,7 +63,7 @@ endif
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
 
-PACKAGES=18
+PACKAGES=9
 
 default:
 	for i in `ls nodes/*.in`; do \
