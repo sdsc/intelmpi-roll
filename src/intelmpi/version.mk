@@ -14,6 +14,7 @@ CPP_SUFFIX         = tgz
 CPP_VERSION        = 2018_update1_composer_edition_for_cpp
 CPP_PKG            = $(CPP_NAME)_$(CPP_VERSION).$(CPP_SUFFIX)
 CPP_DIR            = $(CPP_PKG:%.$(CPP_SUFFIX)=%)
+SOURCE_DIR         = $(CPP_DIR)
 
 FORTRAN_NAME       = parallel_studio_xe
 FORTRAN_SUFFIX     = tgz
