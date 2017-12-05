@@ -80,7 +80,7 @@ default:
         for rpmfile in $$rpmfiles; do \
            base=`basename $$rpmfile|sed 's/.rpm//'`; \
            if test ! -z "`rpm -qa |grep $$base`"; then \
-              rpm -e --nodeps  $$base ;  \
+              rpm -e --nodeps  $$base >& /dev/null;  \
            fi; \
         done
         

@@ -95,7 +95,7 @@ build: $(SRC_DIRS)
               perl -pi -e "s!LICENSEPATH!$(LICENSESERVER)!g" $${package}/silent.cfg; \
               cd $${package}; \
              ./install.sh --silent silent.cfg; \
-             ls rpm/*.rpm >> $(REDHAT.ROOT)/rpmnames; \
+             find . -name \*.rpm >> $(REDHAT.ROOT)/rpmnames; \
              cd ..; \
            done; \
            packageCount=1; \
