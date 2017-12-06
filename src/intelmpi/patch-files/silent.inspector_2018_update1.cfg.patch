@@ -1,0 +1,31 @@
+--- inspector_2018_update1/silent.cfg	2017-11-03 08:11:40.000000000 -0700
++++ patch-files/silent.inspector_2018_update1.cfg	2017-12-04 16:15:51.425222442 -0800
+@@ -6,13 +6,13 @@
+ # snpat       - the serial number pattern (ABCD-01234567)
+ 
+ # Accept EULA, valid values are: {accept, decline}
+-ACCEPT_EULA=decline
++ACCEPT_EULA=accept
+ 
+ # Optional error behavior, valid values are: {yes, no}
+ CONTINUE_WITH_OPTIONAL_ERROR=yes
+ 
+ # Install location, valid values are: {/opt/intel, filepat}
+-PSET_INSTALL_DIR=/opt/intel
++PSET_INSTALL_DIR=PKGROOT
+ 
+ # Continue with overwrite of existing installation directory, valid values are: {yes, no}
+ CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes
+@@ -30,10 +30,10 @@
+ #ACTIVATION_SERIAL_NUMBER=snpat
+ 
+ # License file or license server, valid values are: {lspat, filepat}
+-#ACTIVATION_LICENSE_FILE=
++ACTIVATION_LICENSE_FILE=LICENSEPATH
+ 
+ # Activation type, valid values are: {exist_lic, license_server, license_file, trial_lic, serial_number}
+-ACTIVATION_TYPE=exist_lic
++ACTIVATION_TYPE=license_server
+ 
+ # Select 'yes' if head node installation can be used from compute nodes, valid values are: {yes, no}
+ CLUSTER_INSTALL_AUTOMOUNT=yes
