@@ -2,7 +2,7 @@ PACKAGE     = intel
 CATEGORY    = compilers
 
 NAME        = sdsc-intelmpi-compiler-modules
-RELEASE     = 1
+RELEASE     = 2
 PKGROOT     = /opt/modulefiles/$(CATEGORY)/$(PACKAGE)
 
 VERSION_SRC = $(REDHAT.ROOT)/src/intelmpi/version.mk

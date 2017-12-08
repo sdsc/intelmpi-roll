@@ -12,7 +12,6 @@ my $appliance = $#ARGV >= 0 ? $ARGV[0] :
                 -d '/export/rocks/install' ? 'Frontend' : 'Compute';
 my $installedOnAppliancesPattern = '^(?!Frontend).';
 my $isInstalled = -d '/opt/intel';
-my $compilersInstalled = "ROLLNAME" eq "intelmpi";
 
 if($appliance =~ /$installedOnAppliancesPattern/) {
   ok($isInstalled, 'intelmpi installed');
@@ -184,30 +183,27 @@ SKIP: {
 
   skip 'intelmpi compiler not installed', 10 if ! $isInstalled;
 
-  if($compilersInstalled) {
+  $output = `module load intel/VERSION; icc -o $TESTFILE.c.exe $TESTFILE.c 2>&1`;
+  ok($? == 0, 'intel C compiler works');
+  $output = `module load intel/VERSION; ./$TESTFILE.c.exe`;
+  ok($? == 0, 'compiled C program runs');
+  like($output, qr/Hello world/, 'compile C program correct output');
 
-    $output = `module load intel/VERSION; icc -o $TESTFILE.c.exe $TESTFILE.c 2>&1`;
-    ok($? == 0, 'intel C compiler works');
-    $output = `module load intel/VERSION; ./$TESTFILE.c.exe`;
-    ok($? == 0, 'compiled C program runs');
-    like($output, qr/Hello world/, 'compile C program correct output');
+  $output = `module load intel/VERSION; ifort -o $TESTFILE.f.exe $TESTFILE.f 2>&1`;
+  ok($? == 0, 'intel FORTRAN compiler works');
+  $output = `module load intel/VERSION; ./$TESTFILE.f.exe`;
+  ok($? == 0, 'compiled FORTRAN program runs');
+  like($output, qr/Hello world/, 'compile FORTRAN program correct output');
 
-    $output = `module load intel/VERSION; ifort -o $TESTFILE.f.exe $TESTFILE.f 2>&1`;
-    ok($? == 0, 'intel FORTRAN compiler works');
-    $output = `module load intel/VERSION; ./$TESTFILE.f.exe`;
-    ok($? == 0, 'compiled FORTRAN program runs');
-    like($output, qr/Hello world/, 'compile FORTRAN program correct output');
-
-    $output = `module load intel/VERSION; man icc 2>&1`;
-    ok($output =~ /Intel/, 'man works for intel');
+  $output = `module load intel/VERSION; man icc 2>&1`;
+  ok($output =~ /Intel/, 'man works for intel');
   
-    `/bin/ls /opt/modulefiles/compilers/intel/[0-9.]* 2>&1`;
-    ok($? == 0, 'intel module installed');
-    `/bin/ls /opt/modulefiles/compilers/intel/.version.[0-9.]* 2>&1`;
-    ok($? == 0, 'intel version module installed');
-    ok(-l '/opt/modulefiles/compilers/intel/.version',
-       'intel version module link created');
- }
+  `/bin/ls /opt/modulefiles/compilers/intel/[0-9.]* 2>&1`;
+  ok($? == 0, 'intel module installed');
+  `/bin/ls /opt/modulefiles/compilers/intel/.version.[0-9.]* 2>&1`;
+  ok($? == 0, 'intel version module installed');
+  ok(-l '/opt/modulefiles/compilers/intel/.version',
+     'intel version module link created');
 
   $output = `module load mkl/L_MKL_VERS; gcc -o $TESTFILE.mkl.exe $TESTFILE.mkl.c -I\${MKL_ROOT}/include -L\${MKL_ROOT}/intel64/lib -lmkl_gf_lp64 -lmkl_core -lmkl_gnu_thread -lpthread -lm -lgomp 2>&1`;
   ok($? == 0, 'mkl compiles w/gnu C');
@@ -246,42 +242,32 @@ close(OUT);
 
 foreach my $compiler (@COMPILERS) {
 
-    my $compilername = (split('/', $compiler))[0];
+  my $compilername = (split('/', $compiler))[0];
 
-    SKIP: {
+  my $command = "module load $compiler intelmpi; mpicc -o $TESTFILE.exe $TESTFILE.c";
+  $output = `$command 2>&1`;
+  ok(-x "$TESTFILE.exe", "Compile with intelmpi/$compilername");
 
-      skip "intelmpi/$compilername not installed", 6
-        if ! -d "/opt/intel/VERSION/compilers_and_libraries_VERSION/linux/mpi";
+  SKIP: {
 
+    skip 'No exe', 1 if ! -x "$TESTFILE.exe";
 
-       my $command = "module load $compiler intelmpi; mpicc -o $TESTFILE.exe $TESTFILE.c";
-        $output = `$command 2>&1`;
-        ok(-x "$TESTFILE.exe", "Compile with intelmpi/$compilername");
+    $command = "module load $compiler intelmpi; mpirun -np $NODECOUNT ./$TESTFILE.exe";
+    $output = `$command 2>&1`;
+    like($output, qr/process $LASTNODE of $NODECOUNT/,
+         "Run with intelmpi/$compilername");
 
-        SKIP: {
+  }
 
-          skip 'No exe', 1 if ! -x "$TESTFILE.exe";
-
-          $command = "module load $compiler intelmpi; mpirun -np $NODECOUNT ./$TESTFILE.exe";
-          $output = `$command 2>&1`;
-          like($output, qr/process $LASTNODE of $NODECOUNT/,
-               "Run with intelmpi/$compilername");
-
-        }
-
-        `rm -f $TESTFILE.exe`;
-
-        my $dir = "/opt/modulefiles/mpi/.$compilername/intelmpi";
-        `/bin/ls $dir/[0-9]* 2>&1`;
-        ok($? == 0, "intelmpi/$compilername module installed");
-        `/bin/ls $dir/.version.[0-9]* 2>&1`;
-        ok($? == 0, "intelmpi/$compilername version module installed");
-        ok(-l "$dir/.version",
-           "intelmpi/$compilername version module link created");
-
-      }
-
+  `rm -f $TESTFILE.exe`;
 
 }
+
+my $dir = "/opt/modulefiles/mpi/intelmpi";
+`/bin/ls $dir/[0-9]* 2>&1`;
+ok($? == 0, "intelmpi module installed");
+`/bin/ls $dir/.version.[0-9]* 2>&1`;
+ok($? == 0, "intelmpi version module installed");
+ok(-l "$dir/.version", "intelmpi version module link created");
 
 `rm -fr $TESTFILE*`;

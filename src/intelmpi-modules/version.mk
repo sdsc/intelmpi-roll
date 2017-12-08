@@ -1,18 +1,14 @@
-ifndef ROLLCOMPILER
-  ROLLCOMPILER = gnu
-endif
-COMPILERNAME := $(firstword $(subst /, ,$(ROLLCOMPILER)))
-
 PACKAGE     = intelmpi
 CATEGORY    = mpi
 
-NAME        = sdsc-$(PACKAGE)-modules_$(COMPILERNAME)
-RELEASE     = 4
-PKGROOT     = /opt/modulefiles/$(CATEGORY)/.$(COMPILERNAME)/$(PACKAGE)
+NAME        = sdsc-$(PACKAGE)-modules
+RELEASE     = 5
+PKGROOT     = /opt/modulefiles/$(CATEGORY)/$(PACKAGE)
 
 VERSION_SRC = $(REDHAT.ROOT)/src/$(PACKAGE)/version.mk
 VERSION_INC = version.inc
 include $(VERSION_INC)
 
 RPM.EXTRAS  = AutoReq:No
+RPM.EXTRAS  = AutoReq:No\nObsoletes:sdsc-intelmpi-modules_gnu,sdsc-intelmpi-modules_intel,sdsc-intelmpi-modules_pgi
 RPM.PREFIX  = $(PKGROOT)
