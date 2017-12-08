@@ -8,26 +8,8 @@ $(VERSION_INC): $(VERSION_SRC)
 	/bin/grep 'VERSION.*=' $(VERSION_SRC) > $@
  
 build:
-	YEAR=`echo $(VERSION)|sed 's/\..*//'`
 
-install::
-	mkdir -p -m 755 $(ROOT)/$(PKGROOT)
-	for V in $(VERSION) $(EXTRA_MODULE_VERSIONS); do \
-          cp *.module $(ROOT)/$(PKGROOT)/$$V; \
-          cp *.version $(ROOT)/$(PKGROOT)/.version.$$V; \
-          perl -pi -e 's#COMPILERNAME#$(COMPILERNAME)#g;' \
-                   -e 's#MPINAME#$(MPINAME)#g;' \
-                   -e 's#ROLLCOMPILER#$(ROLLCOMPILER)#g;' \
-                   -e 's#ROLLMPI#$(ROLLMPI)#g;' \
-                   -e 's#ROLLOPTS#$(ROLLOPTS)#g;' \
-                   -e 's#ROLLPY#$(ROLLPY)#g;' \
-                   -e "s#VERSION#$$V#g;" \
-                   -e "s#YEAR#$(YEAR)#g;" \
-                   -e "s#M_VERS#$(L_MKL_VERSION)#g;" \
-            $(ROOT)/$(PKGROOT)/.version.$$V $(ROOT)/$(PKGROOT)/$$V; \
-           perl -pi -e "s#L_MKL_TEMP#L_MKL_VERSION#g;"  $(ROOT)/$(PKGROOT)/$$V; \
-        done
-
+install:: typical-modulefile-install
 
 clean::
 	rm -f $(VERSION_INC)
