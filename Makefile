@@ -63,7 +63,7 @@ endif
 -include $(ROLLSROOT)/etc/Rolls.mk
 include Rolls.mk
 
-PACKAGES=18
+PACKAGES=9
 
 default:
 	for i in `ls nodes/*.in`; do \
@@ -80,7 +80,7 @@ default:
         for rpmfile in $$rpmfiles; do \
            base=`basename $$rpmfile|sed 's/.rpm//'`; \
            if test ! -z "`rpm -qa |grep $$base`"; then \
-              rpm -e --nodeps  $$base ;  \
+              rpm -e --nodeps  $$base >& /dev/null;  \
            fi; \
         done
         

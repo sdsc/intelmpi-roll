@@ -1,5 +1,5 @@
---- parallel_studio_xe_2016_update3/silent.cfg	2016-04-21 07:40:37.000000000 -0700
-+++ patch-files/silent.cfg	2016-08-08 16:06:34.079014624 -0700
+--- advisor_2018_update1/silent.cfg	2017-11-03 08:47:00.000000000 -0700
++++ patch-files/silent.advisor.cfg	2017-12-04 10:57:31.618612762 -0800
 @@ -6,13 +6,13 @@
  # snpat       - the serial number pattern (ABCD-01234567)
  
@@ -27,5 +27,5 @@
 -ACTIVATION_TYPE=exist_lic
 +ACTIVATION_TYPE=license_server
  
- # Sampling driver installation type, valid values are: {build, kit}
- AMPLIFIER_SAMPLING_DRIVER_INSTALL_TYPE=build
+ # Select 'yes' if head node installation can be used from compute nodes, valid values are: {yes, no}
+ CLUSTER_INSTALL_AUTOMOUNT=yes

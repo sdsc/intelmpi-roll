@@ -1,0 +1,18 @@
+--- l_mpi_2018.1.163/silent.cfg	2017-11-08 05:35:48.000000000 -0800
++++ patch-files/silent.l_mpi_2018.1.163.cfg	2017-12-04 11:14:50.124567255 -0800
+@@ -6,13 +6,13 @@
+ # snpat       - the serial number pattern (ABCD-01234567)
+ 
+ # Accept EULA, valid values are: {accept, decline}
+-ACCEPT_EULA=decline
++ACCEPT_EULA=accept
+ 
+ # Optional error behavior, valid values are: {yes, no}
+ CONTINUE_WITH_OPTIONAL_ERROR=yes
+ 
+ # Install location, valid values are: {/opt/intel, filepat}
+-PSET_INSTALL_DIR=/opt/intel
++PSET_INSTALL_DIR=PKGROOT
+ 
+ # Continue with overwrite of existing installation directory, valid values are: {yes, no}
+ CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes

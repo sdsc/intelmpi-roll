@@ -13,7 +13,7 @@
 	</copyright>
 
 	<package>sdsc-intelmpi_PACKAGE</package>
-	<package>sdsc-intelmpi-modules_COMPILERNAME</package>
+	<package>sdsc-intelmpi-modules</package>
 	<package>sdsc-intelmpi-mkl-modules</package>
 	<package>sdsc-intelmpi-compiler-modules</package>
 	<package>sdsc-intelmpi-roll-test</package>

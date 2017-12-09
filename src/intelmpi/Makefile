@@ -82,18 +82,22 @@ LICENSE: $(SRC_DIRS)
 	echo intel > $@
 
 build: $(SRC_DIRS)
-	patch $(SOURCE_DIR)/silent.cfg patch-files/silent.cfg.patch
-	perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $(SOURCE_DIR)/silent.cfg
 	mkdir $(PKGROOT)
 	( \
            if test -z $(LICENSESERVER); then \
               echo  "Licenseserver address needed: e.g. ROLLOPTS=23000\\@license.edu"; \
               exit -1; \
            fi; \
-           perl -pi -e "s!LICENSEPATH!$(LICENSESERVER)!g" $(SOURCE_DIR)/silent.cfg; \
-           cd $(SOURCE_DIR); \
-           ./install.sh --silent silent.cfg; \
-           ls rpm/*.rpm > $(REDHAT.ROOT)/rpmnames; \
+           rm -f $(REDHAT.ROOT)/rpmnames; \
+           for package in $(SOURCE_DIRS); do \
+	      patch $${package}/silent.cfg patch-files/silent.$${package}.cfg.patch; \
+              perl -pi -e "s!PKGROOT!$(PKGROOT)!g" $${package}/silent.cfg; \
+              perl -pi -e "s!LICENSEPATH!$(LICENSESERVER)!g" $${package}/silent.cfg; \
+              cd $${package}; \
+             ./install.sh --silent silent.cfg; \
+             find . -name \*.rpm >> $(REDHAT.ROOT)/rpmnames; \
+             cd ..; \
+           done; \
            packageCount=1; \
            mkdir  -p $(TEMP_DIRS)/build-intelmpi_$${packageCount}; \
            cd  $(PKGROOT); \
@@ -147,4 +151,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)
+	rm -rf $(SOURCE_DIRS) $(PSXE_DOC_P_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)
