@@ -2,7 +2,7 @@ PACKAGE     = intelmpi-mkl
 CATEGORY    = applications
 
 NAME        = sdsc-$(PACKAGE)-modules
-RELEASE     = 1
+RELEASE     = 2
 PKGROOT     = /opt/modulefiles/$(CATEGORY)/mkl
 
 VERSION_SRC = $(REDHAT.ROOT)/src/intelmpi/version.mk
