@@ -3,7 +3,7 @@ ifneq ("$(ROLLOPTS)", "$(subst licenseserver=,,$(ROLLOPTS))")
 endif
 NAME               = sdsc-intelmpi
 VERSION            = 2018.1.163
-RELEASE            = 0
+RELEASE            = 1
 PKGROOT            = /opt/intel/$(VERSION)
 
 SRC_SUBDIR         = intelmpi
@@ -48,7 +48,7 @@ L_TBB_DIR           = $(L_TBB_PKG:%.$(L_TBB_SUFFIX)=%)
 
 L_MKL_NAME          = l_mkl
 L_MKL_SUFFIX        = tgz
-L_MKL_VERSION       = 2018_1.163
+L_MKL_VERSION       = 2018.1.163
 L_MKL_PKG           = $(L_MKL_NAME)_$(L_MKL_VERSION).$(L_MKL_SUFFIX)
 L_MKL_DIR           = $(L_MKL_PKG:%.$(L_MKL_SUFFIX)=%)
 
@@ -57,8 +57,6 @@ L_MPI_SUFFIX        = tgz
 L_MPI_VERSION       = 2018.1.163
 L_MPI_PKG           = $(L_MPI_NAME)_$(L_MPI_VERSION).$(L_MPI_SUFFIX)
 L_MPI_DIR           = $(L_MPI_PKG:%.$(L_MPI_SUFFIX)=%)
-
-L_MKL_VERSION       = 2018.1.163
 
 TGZ_PKGS            = $(CPP_PKG) $(FORTRAN_PKG) $(L_ITAC_P_PKG) $(L_MKL_PKG) $(L_MPI_PKG) $(L_TBB_PKG)
 TAR_GZ_PKGS         = $(ADVISOR_PKG) $(INSPECTOR_PKG)
