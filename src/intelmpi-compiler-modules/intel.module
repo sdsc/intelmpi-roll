@@ -43,12 +43,12 @@ foreach path [glob -nocomplain /opt/modulefiles/*/.intel] {
 
 # Compiler environment modifications
 set intelPrefix /opt/intel/VERSION
+set versionYear [lindex [split VERSION .] 0]
 set intelHome $intelPrefix/compilers_and_libraries_VERSION/linux
-set intelOtherHome $intelPrefix/compilers_and_libraries_YEAR/linux
 setenv INTELHOME $intelHome
 
-prepend-path PATH $intelHome/bin/intel64:$intelOtherHome/debugger/gdb/intel64_mic/bin
-prepend-path MANPATH $intelHome/man/common:/opt/intel/VERSION/documentation_YEAR/en/debugger/gdb-ia/man
+prepend-path PATH $intelHome/bin/intel64
+prepend-path MANPATH $intelPrefix/documentation_$versionYear/en/man/common
 setenv TBBROOT $intelHome/tbb
 prepend-path LD_LIBRARY_PATH $intelHome/compiler/lib/intel64_lin:$intelHome/ipp/../compiler/lib/intel64:$intelHome/ipp/lib/intel64:$intelHome/mkl/lib/intel64:$intelHome/tbb/lib/intel64/gcc4.4
 setenv LIBRARY_PATH $intelHome/compiler/lib/intel64_lin:$intelHome/ipp/../compiler/lib/intel64:$intelHome/ipp/lib/intel64:$intelHome/mkl/lib/intel64:$intelHome/tbb/lib/intel64/gcc4.4
