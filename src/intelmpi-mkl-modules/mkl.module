@@ -2,7 +2,7 @@
 module-whatis "Intel(R) Math Kernel Library"
 module-whatis "Version: VERSION"
 
-set intelHome /opt/intel/INTELVER/compilers_and_libraries/linux
+set intelHome /opt/intel/INTELVER/compilers_and_libraries_INTELVER/linux
 setenv MKLHOME $intelHome/mkl
 
 prepend-path MANPATH $intelHome/man/en_US

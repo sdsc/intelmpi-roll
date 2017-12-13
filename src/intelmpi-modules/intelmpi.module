@@ -36,7 +36,7 @@ array set compilerSets {
 }
 set compilers [split $compilerSets($compiler) :]
 
-set mpiHome /opt/intel/VERSION/compilers_and_libraries/linux/mpi/intel64
+set mpiHome /opt/intel/INTELVER/compilers_and_libraries_INTELVER/linux/mpi/intel64
 
 setenv MPIHOME $mpiHome
 setenv I_MPI_CC  [lindex $compilers 0]
