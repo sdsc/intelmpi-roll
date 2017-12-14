@@ -1,5 +1,5 @@
 NAME       = sdsc-intelmpi-roll-test
-RELEASE    = 4
+RELEASE    = 5
 PKGROOT    = /root/rolltests
 
 VERSION_SRC = $(REDHAT.ROOT)/src/intelmpi/version.mk

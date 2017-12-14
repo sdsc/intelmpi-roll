@@ -209,7 +209,7 @@ SKIP: {
   ok($? == 0, 'mkl compiles w/gnu C');
   $output = `module load mkl/L_MKL_VERS; ./$TESTFILE.mkl.exe 5`;
   ok($? == 0, 'mkl runs w/gnu C');
-  like($output, qr/115\s+150\s+185\s+220\s+255/, 'mkl correct output w/gu C');
+  like($output, qr/115\s+150\s+185\s+220\s+255/, 'mkl correct output w/gnu C');
 
   `/bin/ls /opt/modulefiles/applications/mkl/[0-9.]* 2>&1`;
   ok($? == 0, 'mkl module installed');
