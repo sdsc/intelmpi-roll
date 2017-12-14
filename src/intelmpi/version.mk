@@ -3,7 +3,7 @@ ifneq ("$(ROLLOPTS)", "$(subst licenseserver=,,$(ROLLOPTS))")
 endif
 NAME               = sdsc-intelmpi
 VERSION            = 2018.1.163
-RELEASE            = 1
+RELEASE            = 2
 PKGROOT            = /opt/intel/$(VERSION)
 
 SRC_SUBDIR         = intelmpi
