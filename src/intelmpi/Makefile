@@ -82,7 +82,7 @@ LICENSE: $(SRC_DIRS)
 	echo intel > $@
 
 build: $(SRC_DIRS)
-	mkdir $(PKGROOT)
+	mkdir -p $(PKGROOT)
 	( \
            if test -z $(LICENSESERVER); then \
               echo  "Licenseserver address needed: e.g. ROLLOPTS=23000\\@license.edu"; \
