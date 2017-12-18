@@ -82,10 +82,11 @@ LICENSE: $(SRC_DIRS)
 	echo intel > $@
 
 build: $(SRC_DIRS)
-	mkdir -p $(PKGROOT)
+	mkdir -p $(ROOT)/$(PKGROOT)
+	$(PKGROOT_BIND_MOUNT)
 	( \
            if test -z $(LICENSESERVER); then \
-              echo  "Licenseserver address needed: e.g. ROLLOPTS=23000\\@license.edu"; \
+              echo  "Licenseserver address needed: e.g. ROLLOPTS='licenseserver=23000\\@license.edu'"; \
               exit -1; \
            fi; \
            rm -f $(REDHAT.ROOT)/rpmnames; \
@@ -135,12 +136,20 @@ build: $(SRC_DIRS)
            rm -f $(TEMP_DIRS)/$$$$.tmp; \
            rm -f $(TEMP_DIRS)/.files; \
            rm -f $(TEMP_DIRS)/package.tar \
+           rpmfiles=`cat $(REDHAT.ROOT)/rpmnames`; \
+           for rpmfile in $$rpmfiles; do \
+              base=`basename $$rpmfile|sed 's/.rpm//'`; \
+              if test ! -z "`rpm -qa |grep $$base`"; then \
+                 rpm -e --nodeps  $$base >& /dev/null;  \
+              fi; \
+           done \
         )
+	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) build complete :::"
 
 install::
-	mkdir  -p -m 755 $(ROOT)/$(PKGROOT)
+	mkdir -p $(ROOT)/$(PKGROOT)
 	( \
           packageCount=`cat $(TEMP_DIRS)/packageCount`; \
           for PACKAGE in `seq 1 $${packageCount}`; do \
