@@ -142,7 +142,8 @@ build: $(SRC_DIRS)
               if test ! -z "`rpm -qa |grep $$base`"; then \
                  rpm -e --nodeps  $$base >& /dev/null;  \
               fi; \
-           done \
+           done; \
+	   rm -rf $(PKGROOT)/intel_sdp_products.tgz.db  $(PKGROOT)/ism $(PKGROOT)/.pset \
         )
 	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
