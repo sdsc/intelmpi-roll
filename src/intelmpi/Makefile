@@ -161,4 +161,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIRS) $(PSXE_DOC_P_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)
+	rm -rf $(SOURCE_DIRS) $(PSXE_DOC_P_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE
