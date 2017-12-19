@@ -144,8 +144,8 @@ build: $(SRC_DIRS)
               fi; \
            done; \
         )
-	$(PKGROOT_BIND_UMOUNT)
 	rm -rf $(PKGROOT)/../intel_sdp_products.tgz.db  $(PKGROOT)/../ism $(PKGROOT)/../.pset
+	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) build complete :::"
 
