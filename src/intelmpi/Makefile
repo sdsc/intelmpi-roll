@@ -145,6 +145,7 @@ build: $(SRC_DIRS)
            done; \
         )
 	$(PKGROOT_BIND_UMOUNT)
+	rm -rf $(PKGROOT)/../intel_sdp_products.tgz.db  $(PKGROOT)/../ism $(PKGROOT)/../.pset
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) build complete :::"
 
@@ -161,4 +162,3 @@ install::
 
 clean::
 	rm -rf $(SOURCE_DIRS) $(PSXE_DOC_P_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE
-	rm -rf $(PKGROOT)/../intel_sdp_products.tgz.db  $(PKGROOT)/../ism $(PKGROOT)/../.pset
