@@ -143,7 +143,6 @@ build: $(SRC_DIRS)
                  rpm -e --nodeps  $$base >& /dev/null;  \
               fi; \
            done; \
-	   rm -rf $(PKGROOT)/intel_sdp_products.tgz.db  $(PKGROOT)/ism $(PKGROOT)/.pset \
         )
 	$(PKGROOT_BIND_UMOUNT)
 	$(INSTALL_LICENSE_FILES)
@@ -162,3 +161,4 @@ install::
 
 clean::
 	rm -rf $(SOURCE_DIRS) $(PSXE_DOC_P_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE
+	rm -rf $(PKGROOT)/../intel_sdp_products.tgz.db  $(PKGROOT)/../ism $(PKGROOT)/../.pset
