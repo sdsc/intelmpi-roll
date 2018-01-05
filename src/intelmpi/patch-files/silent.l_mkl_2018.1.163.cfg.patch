@@ -1,6 +1,6 @@
 --- l_mkl_2018.1.163/silent.cfg	2017-11-08 05:21:52.000000000 -0800
-+++ patch-files/silent.l_mkl_2018.1.163.cfg	2017-12-04 11:12:42.799082908 -0800
-@@ -6,13 +6,13 @@
++++ patch-files/silent.cfg	2018-01-05 14:42:57.339197088 -0800
+@@ -6,19 +6,19 @@
  # snpat       - the serial number pattern (ABCD-01234567)
  
  # Accept EULA, valid values are: {accept, decline}
@@ -16,3 +16,38 @@
  
  # Continue with overwrite of existing installation directory, valid values are: {yes, no}
  CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes
+ 
+ # List of components to install, valid values are: {ALL, DEFAULTS, anythingpat}
+-COMPONENTS=DEFAULTS
++COMPONENTS=ALL
+ 
+ # Installation mode, valid values are: {install, repair, uninstall}
+ PSET_MODE=install
+@@ -26,12 +26,24 @@
+ # Directory for non-RPM database, valid values are: {filepat}
+ #NONRPM_DB_DIR=filepat
+ 
++# Serial number, valid values are: {snpat}
++#ACTIVATION_SERIAL_NUMBER=snpat
++
++# License file or license server, valid values are: {lspat, filepat}
++ACTIVATION_LICENSE_FILE=LICENSEPATH
++
++# Activation type, valid values are: {exist_lic, license_server, license_file, trial_lic, serial_number}
++ACTIVATION_TYPE=license_server
++
++# Select 'yes' if head node installation can be used from compute nodes, valid values are: {yes, no}
++CLUSTER_INSTALL_AUTOMOUNT=yes
++
+ # Path to the cluster description file, valid values are: {filepat}
+ #CLUSTER_INSTALL_MACHINES_FILE=filepat
+ 
++# Intel(R) Software Improvement Program opt-in, valid values are: {yes, no}
++PHONEHOME_SEND_USAGE_DATA=no
++
+ # Perform validation of digital signatures of RPM files, valid values are: {yes, no}
+ SIGNING_ENABLED=yes
+ 
+-# Select target architecture of your applications, valid values are: {IA32, INTEL64, ALL}
+-ARCH_SELECTED=ALL
+-

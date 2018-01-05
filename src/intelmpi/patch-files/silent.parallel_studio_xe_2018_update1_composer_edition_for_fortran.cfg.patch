@@ -1,6 +1,6 @@
 --- parallel_studio_xe_2018_update1_composer_edition_for_fortran/silent.cfg	2017-11-08 05:20:00.000000000 -0800
-+++ patch-files/silent.parallel_studio_xe_2018_update1_composer_edition_for_fortran.cfg	2017-12-04 16:05:27.961732268 -0800
-@@ -6,13 +6,13 @@
++++ patch-files/silent.cfg	2018-01-05 15:16:31.384716707 -0800
+@@ -6,19 +6,19 @@
  # snpat       - the serial number pattern (ABCD-01234567)
  
  # Accept EULA, valid values are: {accept, decline}
@@ -16,6 +16,13 @@
  
  # Continue with overwrite of existing installation directory, valid values are: {yes, no}
  CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes
+ 
+ # List of components to install, valid values are: {ALL, DEFAULTS, anythingpat}
+-COMPONENTS=DEFAULTS
++COMPONENTS=ALL
+ 
+ # Installation mode, valid values are: {install, repair, uninstall}
+ PSET_MODE=install
 @@ -30,10 +30,10 @@
  #ACTIVATION_SERIAL_NUMBER=snpat
  

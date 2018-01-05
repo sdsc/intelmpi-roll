@@ -1,6 +1,6 @@
 --- l_itac_p_2018.1.017/silent.cfg	2017-10-06 04:25:04.000000000 -0700
-+++ patch-files/silent.l_itac_p.cfg	2017-12-04 11:06:01.022553670 -0800
-@@ -6,13 +6,13 @@
++++ patch-files/silent.cfg	2018-01-05 15:01:20.092920698 -0800
+@@ -6,19 +6,19 @@
  # snpat       - the serial number pattern (ABCD-01234567)
  
  # Accept EULA, valid values are: {accept, decline}
@@ -16,6 +16,13 @@
  
  # Continue with overwrite of existing installation directory, valid values are: {yes, no}
  CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes
+ 
+ # List of components to install, valid values are: {ALL, DEFAULTS, anythingpat}
+-COMPONENTS=DEFAULTS
++COMPONENTS=ALL
+ 
+ # Installation mode, valid values are: {install, repair, uninstall}
+ PSET_MODE=install
 @@ -30,10 +30,10 @@
  #ACTIVATION_SERIAL_NUMBER=snpat
  
