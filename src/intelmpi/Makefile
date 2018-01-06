@@ -136,7 +136,7 @@ build: $(SRC_DIRS)
            rm -f $(TEMP_DIRS)/.files; \
            rm -f $(TEMP_DIRS)/package.tar \
         )
-	rm -rf $(PKGROOT)/intel_sdp_products.tgz.db  $(PKGROOT)/ism $(PKGROOT)/.pset 
+	rm -rf $(PKGROOT)/../intel_sdp_products.tgz.db  $(PKGROOT)/../ism $(PKGROOT)/../.pset 
 	$(INSTALL_LICENSE_FILES)
 	@echo "::: Package $(NAME) build complete :::"
 
