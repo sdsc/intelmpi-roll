@@ -1,5 +1,5 @@
 --- parallel_studio_xe_2018_update1_composer_edition_for_cpp/silent.cfg	2017-11-08 05:16:18.000000000 -0800
-+++ patch-files/silent.cfg	2018-01-05 15:13:48.753681836 -0800
++++ patch-files/silent.cfg	2018-01-05 17:54:20.328056661 -0800
 @@ -6,19 +6,19 @@
  # snpat       - the serial number pattern (ABCD-01234567)
  
@@ -36,3 +36,10 @@
  
  # Path to the cluster description file, valid values are: {filepat}
  #CLUSTER_INSTALL_MACHINES_FILE=filepat
+@@ -45,5 +45,5 @@
+ SIGNING_ENABLED=yes
+ 
+ # Select target architecture of your applications, valid values are: {IA32, INTEL64, ALL}
+-ARCH_SELECTED=ALL
++ARCH_SELECTED=INTEL64
+ 
