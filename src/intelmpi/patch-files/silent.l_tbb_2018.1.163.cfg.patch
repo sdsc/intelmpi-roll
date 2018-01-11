@@ -1,6 +1,6 @@
 --- l_tbb_2018.1.163/silent.cfg	2017-11-08 05:28:32.000000000 -0800
-+++ patch-files/silent.l_tbb_2018.1.163.cfg	2017-12-04 15:53:49.266926547 -0800
-@@ -6,13 +6,13 @@
++++ patch-files/silent.cfg	2018-01-05 17:51:54.784052169 -0800
+@@ -6,19 +6,19 @@
  # snpat       - the serial number pattern (ABCD-01234567)
  
  # Accept EULA, valid values are: {accept, decline}
@@ -16,3 +16,17 @@
  
  # Continue with overwrite of existing installation directory, valid values are: {yes, no}
  CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes
+ 
+ # List of components to install, valid values are: {ALL, DEFAULTS, anythingpat}
+-COMPONENTS=DEFAULTS
++COMPONENTS=ALL
+ 
+ # Installation mode, valid values are: {install, repair, uninstall}
+ PSET_MODE=install
+@@ -33,5 +33,5 @@
+ SIGNING_ENABLED=yes
+ 
+ # Select target architecture of your applications, valid values are: {IA32, INTEL64, ALL}
+-ARCH_SELECTED=ALL
++ARCH_SELECTED=INTEL64
+ 

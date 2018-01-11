@@ -1,6 +1,6 @@
 --- inspector_2018_update1/silent.cfg	2017-11-03 08:11:40.000000000 -0700
-+++ patch-files/silent.inspector_2018_update1.cfg	2017-12-04 16:15:51.425222442 -0800
-@@ -6,13 +6,13 @@
++++ patch-files/silent.cfg	2018-01-05 14:55:37.155111264 -0800
+@@ -6,19 +6,19 @@
  # snpat       - the serial number pattern (ABCD-01234567)
  
  # Accept EULA, valid values are: {accept, decline}
@@ -16,6 +16,13 @@
  
  # Continue with overwrite of existing installation directory, valid values are: {yes, no}
  CONTINUE_WITH_INSTALLDIR_OVERWRITE=yes
+ 
+ # List of components to install, valid values are: {ALL, DEFAULTS, anythingpat}
+-COMPONENTS=DEFAULTS
++COMPONENTS=ALL
+ 
+ # Installation mode, valid values are: {install, repair, uninstall}
+ PSET_MODE=install
 @@ -30,10 +30,10 @@
  #ACTIVATION_SERIAL_NUMBER=snpat
  
