@@ -99,6 +99,7 @@ build: $(SRC_DIRS)
              cd ..; \
            done; \
            tar xvf $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/binding/intel-mpi-binding-kit.tar.gz; \
+           patch cxx/intel64/include/mpichconf.h patch-files/mpichconf.h.patch; \
            $(call MODULE_LOAD_COMPILER, pgi, pgcc); \
            cd c; \
            make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi CC=pgcc NAME=pgcc; \
