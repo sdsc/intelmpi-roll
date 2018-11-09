@@ -99,7 +99,7 @@ build: $(SRC_DIRS)
              cd ..; \
            done; \
            tar xvf $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/binding/intel-mpi-binding-kit.tar.gz; \
-           patch cxx/intel64/include/mpichconf.h patch-files/mpichconf.h.patch; \
+           patch cxx/include/intel64/mpichconf.h patch-files/mpichconf.h.patch; \
            $(call MODULE_LOAD_COMPILER, pgi, pgcc); \
            cd c; \
            make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi CC=pgcc NAME=pgcc; \
@@ -171,4 +171,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIRS) $(PSXE_DOC_P_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)
+	rm -rf $(SOURCE_DIRS) c cxx f77 f90 mpiEULA.txt README-intel-mpi-binding-kit.txt $(PSXE_DOC_P_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)
