@@ -9,12 +9,15 @@ module-whatis "Compiler: $compilernames"
 # Figure out the applicable compiler--either the one whose module was loaded
 # when this modulefile was loaded or the one with the most-recently-loaded
 # module.  Report an error if neither applies.
-if [info exists env(I_MPI_CC)] {
-  set compiler gnu
-  if {$::env(I_MPI_CC) == "icc"} {
-    set compiler intel
-  } elseif {$::env(I_MPI_CC) == "pgcc"} {
-    set compiler pgi
+
+# Figure out the applicable compiler--either the one whose module was loaded
+# when this modulefile was loaded or the one with the most-recently-loaded
+# module.  Report an error if neither applies.
+if [info exists env(MPIHOME)] {
+  foreach {compiler} $compilernames {
+    if {[string first "/$compiler" $::env(MPIHOME)] >= 0} {
+      break
+    }
   }
 } elseif [info exists env(LOADEDMODULES)] {
   foreach {module} [split $::env(LOADEDMODULES) :] {
@@ -24,10 +27,12 @@ if [info exists env(I_MPI_CC)] {
     }
   }
 }
+
 if { ! [info exists compiler] } {
   puts stderr "Need to load a compiler module first"
   exit 1
 }
+
 
 array set compilerSets {
   gnu   gcc:g++:gfortran:gfortran
@@ -47,3 +52,13 @@ setenv I_MPI_FC  [lindex $compilers 3]
 
 prepend-path PATH $mpiHome/bin
 prepend-path LD_LIBRARY_PATH $mpiHome/lib
+
+if { [ string equal $compiler pgi ] } {
+  set-alias mpicc $mpiHome/bin/mpipgcc
+  set-alias mpicxx $mpiHome/bin/mpipgcxx
+  set-alias mpif77 $mpiHome/bin/mpipgf77
+  set-alias mpif90 $mpiHome/bin/mpipgf90
+} elseif { [ string equal $compiler gnu ] } {
+  set-alias mpif90 $mpiHome/bin/mpigf90
+}
+
