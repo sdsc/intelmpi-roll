@@ -6,6 +6,20 @@ module-whatis "intelmpi mpi stack"
 module-whatis "Version: VERSION"
 module-whatis "Compiler: $compilernames"
 
+if {[module-info mode switch1] || [module-info mode switch3]} {
+  # Get the command line that invoked this process; unload only if switching
+  # from gnu to another (compiler) module, e.g., "module switch gnu intel"
+  set commandWords [split [exec /bin/ps -p [pid] -o args=] " "]
+  set switchFrom [lindex [split [module-info name] "/"] 0]
+  set switchTo [lindex [split [lindex $commandWords end] "/"] 0]
+  set unloadApps [expr ! [string equal $switchTo $switchFrom]]
+} elseif {[module-info mode remove]} {
+  set unloadApps 1
+} else {
+  set unloadApps 0
+}
+
+
 array set compilerSets {
   gnu   gcc:g++:gfortran:gfortran
   intel icc:icpc:ifort:ifort
@@ -19,10 +33,11 @@ array set compilerSets {
 # Figure out the applicable compiler--either the one whose module was loaded
 # when this modulefile was loaded or the one with the most-recently-loaded
 # module.  Report an error if neither applies.
-if [ info exists env(I_MPI_CC) ] {
-   foreach {compiler} [list ROLLCOMPILER] {
-     if {[ string match *$env(I_MPI_CC)* $compilerSets($complier) ]} {
-         break;
+
+if { [ info exists env(I_MPI_CC) ] } {
+    foreach {compiler} [list intel gnu pgi] {
+     if { [ string match *$env(I_MPI_CC)* $compilerSets($compiler) ] } {
+         break
      }
    }
 } elseif [info exists env(LOADEDMODULES)] {
@@ -34,6 +49,8 @@ if [ info exists env(I_MPI_CC) ] {
   }
 }
 
+ 
+
 if { ! [info exists compiler] } {
   puts stderr "Need to load a compiler module first"
   exit 1
@@ -42,7 +59,7 @@ if { ! [info exists compiler] } {
 
 set compilers [split $compilerSets($compiler) :]
 
-set mpiHome /opt/intel/2018.1.163/compilers_and_libraries_2018.1.163/linux/mpi/intel64
+set mpiHome /opt/intel/VERSION/compilers_and_libraries_VERSION/linux/mpi/intel64
 
 setenv MPIHOME $mpiHome
 setenv I_MPI_CC  [lindex $compilers 0]
@@ -54,12 +71,27 @@ setenv I_MPI_FC  [lindex $compilers 3]
 prepend-path PATH $mpiHome/bin
 prepend-path LD_LIBRARY_PATH $mpiHome/lib
 
+set moduleProcess [pid]
+set modulesBin $env(HOME)/.modules/$moduleProcess/bin
 if { [ string equal $compiler pgi ] } {
-    set-alias mpicc $mpiHome/bin/mpipgcc
-    set-alias mpicxx $mpiHome/bin/mpipgcxx
-    set-alias mpif77 $mpiHome/bin/mpipgf77
-    set-alias mpif90 $mpiHome/bin/mpipgf90
+    if { ! $unloadApps } {
+      file mkdir $modulesBin
+      exec ln -s $mpiHome/bin/mpipgcc $modulesBin/mpicc
+      exec ln -s $mpiHome/bin/mpipgcxx $modulesBin/mpicxx
+      exec ln -s $mpiHome/bin/mpipgf77 $modulesBin/mpif77
+      exec ln -s $mpiHome/bin/mpipgf90 $modulesBin/mpif90
+    } else {
+      file delete -force $env(HOME)/.modules/$env(MODULEPID)
+    }
+    setenv MODULEPID $moduleProcess
+    prepend-path PATH $modulesBin
 } elseif { [ string equal $compiler gnu ] } {
-    set-alias mpif90 $mpiHome/bin/mpigf90
+     if { ! $unloadApps } {
+       file mkdir $modulesBin
+       exec ln -s $mpiHome/bin/mpigf90 $modulesBin/mpif90
+     } else {
+       file delete -force $env(HOME)/.modules/$env(MODULEPID)
+     }
+     setenv MODULEPID $moduleProcess
+     prepend-path PATH $modulesBin
 }
- 
