@@ -75,6 +75,7 @@ set moduleProcess [pid]
 set modulesBin $env(HOME)/.modules/$moduleProcess/bin
 if { [ string equal $compiler pgi ] } {
     if { ! $unloadApps } {
+      file delete -force $modulesBin
       file mkdir $modulesBin
       exec ln -s $mpiHome/bin/mpipgcc $modulesBin/mpicc
       exec ln -s $mpiHome/bin/mpipgcxx $modulesBin/mpicxx
@@ -87,6 +88,7 @@ if { [ string equal $compiler pgi ] } {
     prepend-path PATH $modulesBin
 } elseif { [ string equal $compiler gnu ] } {
      if { ! $unloadApps } {
+       file delete -force $modulesBin
        file mkdir $modulesBin
        exec ln -s $mpiHome/bin/mpigf90 $modulesBin/mpif90
      } else {
