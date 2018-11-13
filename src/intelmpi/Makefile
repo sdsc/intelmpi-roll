@@ -114,9 +114,11 @@ build: $(SRC_DIRS)
            make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi F90=pgf90 NAME=pgf90; \
            cp -r intel64/* $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/intel64; \
            make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi F90=pgf90 NAME=pgf90 clean; \
+           module unload pgi; \
+           $(call MODULE_LOAD_COMPILER, gnu, gcc); \
            make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi F90=gfortran NAME=gf90; \
            cp -r intel64/* $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/intel64; \
-           module unload pgi; \
+           module unload gnu; \
            packageCount=1; \
            mkdir  -p $(TEMP_DIRS)/build-intelmpi_$${packageCount}; \
            cd  $(PKGROOT); \
