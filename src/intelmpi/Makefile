@@ -98,6 +98,27 @@ build: $(SRC_DIRS)
              find . -name \*.rpm >> $(REDHAT.ROOT)/rpmnames; \
              cd ..; \
            done; \
+           tar xvf $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/binding/intel-mpi-binding-kit.tar.gz; \
+           patch cxx/include/intel64/mpichconf.h patch-files/mpichconf.h.patch; \
+           $(call MODULE_LOAD_COMPILER, pgi, pgcc); \
+           cd c; \
+           make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi CC=pgcc NAME=pgcc; \
+           cp -r intel64/* $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/intel64/; \
+           cd ../cxx ; \
+           make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi CXX=pgc++ NAME=pgcxx; \
+           cp -r intel64/* $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/intel64; \
+           cd ../f77; \
+           make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi F77=pgf77 NAME=pgf77; \
+           cp -r intel64/* $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/intel64; \
+           cd ../f90; \
+           make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi F90=pgf90 NAME=pgf90; \
+           cp -r intel64/* $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/intel64; \
+           make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi F90=pgf90 NAME=pgf90 clean; \
+           module unload pgi; \
+           $(call MODULE_LOAD_COMPILER, gnu, gcc); \
+           make MPI_INST=$(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi F90=gfortran NAME=gf90; \
+           cp -r intel64/* $(PKGROOT)/compilers_and_libraries_$(VERSION)/linux/mpi/intel64; \
+           module unload gnu; \
            packageCount=1; \
            mkdir  -p $(TEMP_DIRS)/build-intelmpi_$${packageCount}; \
            cd  $(PKGROOT); \
@@ -152,4 +173,4 @@ install::
 	@echo "::: Package $(NAME) install complete :::"
 
 clean::
-	rm -rf $(SOURCE_DIRS) $(PSXE_DOC_P_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)
+	rm -rf $(SOURCE_DIRS) c cxx f77 f90 mpiEULA.txt README-intel-mpi-binding-kit.txt $(PSXE_DOC_P_DIR) $(TEMP_DIRS)/*.tmp DESCRIPTION LICENSE $(PKGROOT)

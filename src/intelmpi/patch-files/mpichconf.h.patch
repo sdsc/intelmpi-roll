@@ -1,0 +1,13 @@
+--- cxx/include/intel64/mpichconf.h	2017-10-11 09:09:26.000000000 -0700
++++ patch-files/mpichconf.h	2018-11-09 12:10:40.840526776 -0800
+@@ -1336,10 +1336,5 @@
+ /* #undef volatile */
+ 
+ 
+-/* Include nopackage.h to undef autoconf-defined macros that cause conflicts in
+- * subpackages.  This should not be necessary, but some packages are too
+- * tightly intertwined right now (such as ROMIO and the MPICH core) */
+-#include "nopackage.h"
+-
+ #endif /* !defined(MPICHCONF_H_INCLUDED) */
+ 
